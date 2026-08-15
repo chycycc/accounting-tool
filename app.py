@@ -27,7 +27,7 @@ def save_data(data):
 
 
 def parse_raw_input(raw_str):
-    """Parse input like '750*5+422' or '670 800 670 670' or '183包' into kg total."""
+    """Parse input like '750*5+422' or '670 800 670 670' or '183包' or '183b' into kg total."""
     raw_str = raw_str.strip().replace('×', '*').replace('x', '*').replace('X', '*')
     nums = []
     bag_kg = 0
@@ -35,8 +35,8 @@ def parse_raw_input(raw_str):
         part = part.strip()
         if not part:
             continue
-        # Handle 包 unit: 183包 => kg = 183/40*1000
-        bag_match = re.match(r'^(\d+)\s*包$', part)
+        # Handle 包 unit: 183包 or 183b => kg = 183/40*1000
+        bag_match = re.match(r'^(\d+)\s*(包|b)$', part, re.IGNORECASE)
         if bag_match:
             bag_kg += round(int(bag_match.group(1)) / 40 * 1000)
             continue
@@ -185,6 +185,20 @@ def get_report():
         report['by_price'][p]['amount'] = round(report['by_price'][p]['amount'], 2)
 
     return jsonify(report)
+
+
+@app.route('/api/top10', methods=['GET'])
+def get_top10():
+    year = request.args.get('year')
+    data = load_data()
+    all_records = []
+    for month_key, records in data['records'].items():
+        if year and not month_key.startswith(year):
+            continue
+        for r in records:
+            all_records.append({**r, 'month': month_key})
+    all_records.sort(key=lambda x: x['kg'], reverse=True)
+    return jsonify(all_records[:10])
 
 
 @app.route('/api/export', methods=['GET'])

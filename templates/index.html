@@ -7,7 +7,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
@@ -30,28 +30,47 @@
       <div class="toolbar">
         <div style="display:flex;gap:8px;align-items:center;">
           <select id="monthSelect" onchange="loadRecords()"></select>
-          <button class="btn btn-outline" onclick="createMonth()">+ 新月</button>
+          <button class="btn btn-primary" onclick="createMonth()">+ 新月</button>
         </div>
         <div style="display:flex;gap:8px;">
           <button class="btn btn-primary" onclick="openBatchModal()">📋 批量录入</button>
           <button class="btn btn-danger" id="batchDelBtn" onclick="batchDelete()" style="display:none;">🗑️ 删除选中</button>
-          <button class="btn btn-success" onclick="exportExcel()">📥 导出 Excel</button>
+          <button class="btn btn-primary" onclick="exportExcel()">📥 导出 Excel</button>
         </div>
       </div>
       <div class="row" style="margin-top:8px;">
         <div class="form-group" style="flex:0.6;">
           <label>号期</label>
-          <input type="text" id="inputDate" placeholder="7.1">
+          <input type="text" id="inputDate" placeholder="7.1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
         </div>
         <div class="form-group" style="flex:1.5;">
           <label>原始数据（空格或+分隔，*表示倍数）</label>
-          <input type="text" id="inputRaw" placeholder="750*5+422 或 183包">
+          <input type="text" id="inputRaw" placeholder="750*5+422 或 183b" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
         </div>
         <div class="form-group" style="flex:0.8;">
           <label>单价(元/吨)</label>
           <div class="price-btns" id="inputPriceBtns"></div>
         </div>
         <button class="btn btn-primary" onclick="addRecord()" style="margin-bottom:1px;">添加</button>
+      </div>
+    </div>
+
+    <div id="records-summary" class="records-summary" style="display:none;">
+      <div class="summary-item">
+        <span class="summary-label">天数</span>
+        <span class="summary-value" id="rs-days">0</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">总kg</span>
+        <span class="summary-value" id="rs-kg">0</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">总吨</span>
+        <span class="summary-value" id="rs-tons">0</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">总金额</span>
+        <span class="summary-value" id="rs-amount">0</span>
       </div>
     </div>
 
@@ -75,10 +94,51 @@
           <label>年份：</label>
           <select id="yearSelect" onchange="loadReport()"></select>
         </div>
-        <button class="btn btn-success" onclick="exportReport()">📥 导出年报表</button>
+        <button class="btn btn-primary" onclick="exportReport()">📥 导出年报表</button>
       </div>
     </div>
-    <div class="card">
+
+    <!-- 年度概览 -->
+    <div id="report-overview" style="display:none;">
+      <div class="overview-container">
+        <div class="overview-left">
+          <div class="overview-amount-wrap">
+            <div class="overview-total-label">年度总额</div>
+            <div class="overview-year" id="overview-year">2026</div>
+            <div class="overview-total" id="stat-total">-</div>
+          </div>
+        </div>
+        <div class="overview-right">
+          <div class="overview-metrics">
+            <div class="overview-metric">
+              <span class="overview-metric-value" id="stat-avg-month">-</span>
+              <span class="overview-metric-label">月均金额</span>
+            </div>
+            <div class="overview-metric">
+              <span class="overview-metric-value" id="stat-avg-tons">-</span>
+              <span class="overview-metric-label">日均吨数</span>
+            </div>
+            <div class="overview-metric">
+              <span class="overview-metric-value" id="stat-active-days">-</span>
+              <span class="overview-metric-label">活跃天数</span>
+            </div>
+          </div>
+          <div class="overview-extremes">
+            <div class="overview-extreme high">
+              <span class="overview-extreme-tag">最高</span>
+              <span class="overview-extreme-value" id="stat-max-month">-</span>
+            </div>
+            <div class="overview-extreme low">
+              <span class="overview-extreme-tag">最低</span>
+              <span class="overview-extreme-value" id="stat-min-month">-</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 月度汇总表格 -->
+    <div id="report-monthly-table" class="card" style="display:none;">
       <h3 style="margin-bottom:10px;">📊 月度汇总</h3>
       <div class="table-wrap">
         <table>
@@ -88,7 +148,9 @@
         </table>
       </div>
     </div>
-    <div class="card">
+
+    <!-- 月度趋势图表 -->
+    <div id="report-charts" class="card" style="display:none;">
       <h3 style="margin-bottom:10px;">📈 月度趋势</h3>
       <div style="display:flex;gap:12px;flex-wrap:wrap;">
         <div style="flex:1;min-width:280px;">
@@ -97,6 +159,33 @@
         <div style="flex:1;min-width:280px;">
           <canvas id="chartAmount"></canvas>
         </div>
+      </div>
+    </div>
+
+    <!-- 按单价饼图 -->
+    <div id="report-price-pie" class="card" style="display:none;">
+      <h3 style="margin-bottom:10px;">🥧 按单价占比</h3>
+      <div style="max-width:350px;margin:0 auto;">
+        <canvas id="chartPricePie"></canvas>
+      </div>
+    </div>
+
+    <!-- TOP 10 单日排行 -->
+    <div id="report-top10" class="card" style="display:none;">
+      <h3 style="margin-bottom:10px;">🏆 TOP 10 单日</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>排名</th><th>日期</th><th>kg</th><th>吨数</th><th>金额(元)</th></tr></thead>
+          <tbody id="top10Body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 月度环比 -->
+    <div id="report-comparison" class="card" style="display:none;">
+      <h3 style="margin-bottom:10px;">📉 月度环比</h3>
+      <div style="max-width:500px;">
+        <canvas id="chartComparison"></canvas>
       </div>
     </div>
   </div>
@@ -113,6 +202,37 @@
         <button class="btn btn-primary" onclick="addPrice()">添加</button>
       </div>
       <div id="priceList" style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;"></div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:10px;">📊 报表配置</h3>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">选择要在报表页显示的模块</p>
+      <div class="config-list">
+        <label class="config-item">
+          <input type="checkbox" id="cfg-overview" checked onchange="saveReportConfig()">
+          <span>年度概览卡片</span>
+        </label>
+        <label class="config-item">
+          <input type="checkbox" id="cfg-monthly-table" checked onchange="saveReportConfig()">
+          <span>月度汇总表格</span>
+        </label>
+        <label class="config-item">
+          <input type="checkbox" id="cfg-charts" checked onchange="saveReportConfig()">
+          <span>月度趋势图表</span>
+        </label>
+        <label class="config-item">
+          <input type="checkbox" id="cfg-price-pie" checked onchange="saveReportConfig()">
+          <span>按单价饼图</span>
+        </label>
+        <label class="config-item">
+          <input type="checkbox" id="cfg-top10" checked onchange="saveReportConfig()">
+          <span>TOP 10 单日排行</span>
+        </label>
+        <label class="config-item">
+          <input type="checkbox" id="cfg-comparison" onchange="saveReportConfig()">
+          <span>月度环比</span>
+        </label>
+      </div>
     </div>
   </div>
 </div>
@@ -176,6 +296,7 @@ function toast(msg) {
 function switchTab(tab) {
   document.querySelectorAll('.tab').forEach((el, i) => el.classList.toggle('active', ['records','report','settings'][i] === tab));
   ['records','report','settings'].forEach(t => document.getElementById('tab-'+t).classList.toggle('hidden', t !== tab));
+  localStorage.setItem('activeTab', tab);
   if (tab === 'report') loadReport();
 }
 
@@ -336,12 +457,24 @@ async function loadRecords() {
     <td></td>
     <td>合计 ${records.length} 天</td>
     <td></td>
-    <td class="num">${totalKg.toLocaleString()}</td>
-    <td class="num">${totalTons}</td>
+    <td class="num">${totalKg.toLocaleString()} kg</td>
+    <td class="num">${totalTons} 吨</td>
     <td></td>
-    <td class="num">${parseFloat(totalAmount).toLocaleString('zh-CN', {minimumFractionDigits:2})}</td>
+    <td class="num">${parseFloat(totalAmount).toLocaleString('zh-CN', {minimumFractionDigits:2})} 元</td>
     <td></td>
   </tr>`;
+
+  // Update summary
+  const summary = document.getElementById('records-summary');
+  if (records.length) {
+    summary.style.display = 'grid';
+    document.getElementById('rs-days').textContent = records.length;
+    document.getElementById('rs-kg').textContent = totalKg.toLocaleString();
+    document.getElementById('rs-tons').textContent = totalTons;
+    document.getElementById('rs-amount').textContent = parseFloat(totalAmount).toLocaleString('zh-CN', {minimumFractionDigits:2});
+  } else {
+    summary.style.display = 'none';
+  }
 }
 
 async function addRecord() {
@@ -403,96 +536,155 @@ function batchDelete() {
   });
 }
 
-let chartTonsInstance = null;
-let chartAmountInstance = null;
+let chartInstances = {};
+
+// 数字计数动画
+function animateNumber(element, target, duration = 800, prefix = '', suffix = '') {
+  const startTime = performance.now();
+  const startValue = 0;
+
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    // easeOutCubic
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = startValue + (target - startValue) * eased;
+
+    if (target >= 100) {
+      element.textContent = prefix + Math.round(current).toLocaleString() + suffix;
+    } else {
+      element.textContent = prefix + current.toFixed(1) + suffix;
+    }
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    } else {
+      element.textContent = prefix + (target >= 100 ? Math.round(target).toLocaleString() : target.toFixed(1)) + suffix;
+    }
+  }
+  requestAnimationFrame(update);
+}
+
+function destroyCharts() {
+  Object.values(chartInstances).forEach(c => { if (c) c.destroy(); });
+  chartInstances = {};
+}
 
 async function loadReport() {
   const year = document.getElementById('yearSelect').value;
   const report = await (await fetch(API+`/api/report?year=${year}`)).json();
+  const config = loadReportConfig();
 
+  // Apply visibility
+  applyReportConfig();
+
+  const months = report.months || [];
+  const fmt = v => parseFloat(v).toLocaleString('zh-CN', {minimumFractionDigits:2});
+
+  // ===== 1. Overview Cards =====
+  if (config['overview'] && months.length) {
+    document.getElementById('overview-year').textContent = year;
+    const tAmt = months.reduce((s,m)=>s+m.total_amount,0);
+    const tDays = months.reduce((s,m)=>s+m.days,0);
+    const tTons = months.reduce((s,m)=>s+m.total_tons,0);
+    const avgMonth = tAmt / months.length;
+    const avgTons = tDays > 0 ? tTons / tDays : 0;
+    const sorted = [...months].sort((a,b)=>b.total_amount-a.total_amount);
+
+    // 主金额计数动画
+    animateNumber(document.getElementById('stat-total'), tAmt, 1000, '¥');
+
+    // 其他数字淡入
+    document.getElementById('stat-avg-month').textContent = '¥' + fmt(avgMonth);
+    document.getElementById('stat-avg-tons').textContent = avgTons.toFixed(1) + '吨';
+    document.getElementById('stat-active-days').textContent = tDays + '天';
+    document.getElementById('stat-max-month').textContent = sorted[0] ? sorted[0].month.split('-')[1]+'月 ¥'+fmt(sorted[0].total_amount) : '-';
+    document.getElementById('stat-min-month').textContent = sorted.length ? sorted[sorted.length-1].month.split('-')[1]+'月 ¥'+fmt(sorted[sorted.length-1].total_amount) : '-';
+  }
+
+  // ===== 2. Monthly Table =====
   const tbody = document.getElementById('reportBody');
   const foot = document.getElementById('reportFoot');
-  tbody.innerHTML = report.months.map(m => `<tr>
+  tbody.innerHTML = months.map(m => `<tr>
     <td>${m.month}</td><td>${m.days}</td>
     <td class="num">${m.total_kg.toLocaleString()}</td>
     <td class="num">${m.total_tons}</td>
-    <td class="num">${m.total_amount.toLocaleString('zh-CN', {minimumFractionDigits:2})}</td>
+    <td class="num">${fmt(m.total_amount)}</td>
   </tr>`).join('');
 
-  if (report.months.length) {
-    const tDays = report.months.reduce((s,m)=>s+m.days,0);
-    const tKg = report.months.reduce((s,m)=>s+m.total_kg,0);
-    const tTons = report.months.reduce((s,m)=>s+m.total_tons,0);
-    const tAmt = report.months.reduce((s,m)=>s+m.total_amount,0);
+  if (months.length) {
+    const tDays = months.reduce((s,m)=>s+m.days,0);
+    const tKg = months.reduce((s,m)=>s+m.total_kg,0);
+    const tTons = months.reduce((s,m)=>s+m.total_tons,0);
+    const tAmt = months.reduce((s,m)=>s+m.total_amount,0);
     foot.innerHTML = `<tr class="summary-row">
-      <td>全年合计</td><td>${tDays}</td>
-      <td class="num">${tKg.toLocaleString()}</td>
-      <td class="num">${tTons.toFixed(3)}</td>
-      <td class="num">${tAmt.toLocaleString('zh-CN', {minimumFractionDigits:2})}</td>
+      <td>全年合计</td><td>${tDays} 天</td>
+      <td class="num">${tKg.toLocaleString()} kg</td>
+      <td class="num">${tTons.toFixed(3)} 吨</td>
+      <td class="num">${fmt(tAmt)} 元</td>
     </tr>`;
   } else {
     foot.innerHTML = '';
   }
 
-  // Charts
-  const labels = report.months.map(m => m.month.split('-')[1] + '月');
-  const tonsData = report.months.map(m => m.total_tons);
-  const amountData = report.months.map(m => m.total_amount);
+  // ===== 3. Charts =====
+  destroyCharts();
+  const labels = months.map(m => m.month.split('-')[1] + '月');
+  const amountData = months.map(m => m.total_amount);
+  const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#166534';
 
-  if (chartTonsInstance) chartTonsInstance.destroy();
-  if (chartAmountInstance) chartAmountInstance.destroy();
+  if (config['charts'] && months.length) {
+    chartInstances.line = new Chart(document.getElementById('chartTons'), {
+      type: 'line',
+      data: { labels, datasets: [{ label: '金额', data: amountData, borderColor: accentColor, backgroundColor: accentColor+'15', fill: true, tension: 0.3, pointRadius: 5, pointBackgroundColor: accentColor }] },
+      options: { responsive: true, plugins: { title: { display: true, text: '月度金额趋势' }, legend: { display: false } }, scales: { y: { beginAtZero: true, title: { display: true, text: '元' } } } }
+    });
+    chartInstances.bar = new Chart(document.getElementById('chartAmount'), {
+      type: 'bar',
+      data: { labels, datasets: [{ label: '金额', data: amountData, backgroundColor: accentColor+'99', borderColor: accentColor, borderWidth: 1, borderRadius: 4 }] },
+      options: { responsive: true, plugins: { title: { display: true, text: '月度金额对比' }, legend: { display: false } }, scales: { y: { beginAtZero: true, title: { display: true, text: '元' } } } }
+    });
+  }
 
-  chartTonsInstance = new Chart(document.getElementById('chartTons'), {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [{
-        label: '金额',
-        data: amountData,
-        borderColor: '#4A90D9',
-        backgroundColor: 'rgba(74,144,217,0.1)',
-        fill: true,
-        tension: 0.3,
-        pointRadius: 5,
-        pointBackgroundColor: '#4A90D9'
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        title: { display: true, text: '月度金额趋势', font: {size:14} },
-        legend: { display: false }
-      },
-      scales: {
-        y: { beginAtZero: true, title: { display: true, text: '元' } }
-      }
-    }
-  });
+  // ===== 4. Price Pie Chart =====
+  if (config['price-pie'] && report.by_price && Object.keys(report.by_price).length) {
+    const pieLabels = Object.keys(report.by_price).sort((a,b)=>a-b).map(p => p + '元/吨');
+    const pieData = Object.keys(report.by_price).sort((a,b)=>a-b).map(p => report.by_price[p].amount);
+    const pieColors = ['#166534','#15803D','#16A34A','#22C55E','#4ADE80','#86EFAC'];
+    chartInstances.pie = new Chart(document.getElementById('chartPricePie'), {
+      type: 'doughnut',
+      data: { labels: pieLabels, datasets: [{ data: pieData, backgroundColor: pieColors.slice(0, pieLabels.length), borderWidth: 2, borderColor: 'var(--surface)' }] },
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+  }
 
-  chartAmountInstance = new Chart(document.getElementById('chartAmount'), {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [{
-        label: '金额',
-        data: amountData,
-        backgroundColor: 'rgba(39,174,96,0.7)',
-        borderColor: '#27ae60',
-        borderWidth: 1,
-        borderRadius: 6
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        title: { display: true, text: '月度金额对比', font: {size:14} },
-        legend: { display: false }
-      },
-      scales: {
-        y: { beginAtZero: true, title: { display: true, text: '元' } }
-      }
-    }
-  });
+  // ===== 5. Top 10 Daily Records =====
+  if (config['top10']) {
+    const top10Res = await fetch(API+`/api/top10?year=${year}`);
+    const top10 = await top10Res.json();
+    const top10Body = document.getElementById('top10Body');
+    top10Body.innerHTML = top10.map((r, i) => `<tr>
+      <td style="font-weight:700;color:var(--accent);">${i+1}</td>
+      <td>${r.date}</td>
+      <td class="num">${r.kg.toLocaleString()}</td>
+      <td class="num">${(r.kg/1000).toFixed(3)}</td>
+      <td class="num">${fmt(r.kg/1000*r.price)}</td>
+    </tr>`).join('');
+  }
+
+  // ===== 6. Monthly Comparison =====
+  if (config['comparison'] && months.length > 1) {
+    const compLabels = months.slice(1).map(m => m.month.split('-')[1] + '月');
+    const compData = months.slice(1).map((m, i) => {
+      const prev = months[i].total_amount;
+      return prev > 0 ? ((m.total_amount - prev) / prev * 100).toFixed(1) : 0;
+    });
+    chartInstances.comp = new Chart(document.getElementById('chartComparison'), {
+      type: 'bar',
+      data: { labels: compLabels, datasets: [{ label: '环比增长%', data: compData, backgroundColor: compData.map(v => v >= 0 ? '#16A34A99' : '#EF444499'), borderColor: compData.map(v => v >= 0 ? '#16A34A' : '#EF4444'), borderWidth: 1, borderRadius: 4 }] },
+      options: { responsive: true, plugins: { title: { display: true, text: '月度环比增长率' }, legend: { display: false } }, scales: { y: { title: { display: true, text: '%' } } } }
+    });
+  }
 }
 
 function exportExcel() {
@@ -514,8 +706,8 @@ function parseRaw(rawStr) {
   for (let part of rawStr.split('+')) {
     part = part.trim();
     if (!part) continue;
-    // Handle 包 unit: 183包 => kg = 183/40*1000
-    const bagMatch = part.match(/^(\d+)\s*包$/);
+    // Handle 包 unit: 183包 or 183b => kg = 183/40*1000
+    const bagMatch = part.match(/^(\d+)\s*(包|b)$/i);
     if (bagMatch) {
       bagKg += Math.round(parseInt(bagMatch[1]) / 40 * 1000);
       continue;
@@ -548,7 +740,7 @@ function openBatchModal() {
     ).join(' ');
     html += `<tr id="batchRow${d}">
       <td style="font-weight:600;text-align:center;">${dateStr}</td>
-      <td><input type="text" id="batchRaw${d}" placeholder="如 750×5+422" oninput="calcBatchRow(${d})"></td>
+      <td><input type="text" id="batchRaw${d}" placeholder="如 750×5 或 183b" oninput="calcBatchRow(${d})" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></td>
       <td class="calculated" id="batchKg${d}">-</td>
       <td class="calculated" id="batchTons${d}">-</td>
       <td class="price-cell">${priceBtns}</td>
@@ -643,7 +835,63 @@ function toggleTheme() {
 const savedTheme = localStorage.getItem('theme') || 'dark';
 setTheme(savedTheme);
 
-loadPrices().then(loadMonths);
+// ===== Report Configuration =====
+const REPORT_SECTIONS = ['overview', 'monthly-table', 'charts', 'price-pie', 'top10', 'comparison'];
+const DEFAULT_CONFIG = {
+  'overview': true,
+  'monthly-table': true,
+  'charts': true,
+  'price-pie': true,
+  'top10': true,
+  'comparison': false
+};
+
+function loadReportConfig() {
+  try {
+    const saved = localStorage.getItem('reportConfig');
+    return saved ? JSON.parse(saved) : {...DEFAULT_CONFIG};
+  } catch {
+    return {...DEFAULT_CONFIG};
+  }
+}
+
+function saveReportConfig() {
+  const config = {};
+  REPORT_SECTIONS.forEach(key => {
+    const el = document.getElementById('cfg-' + key);
+    if (el) config[key] = el.checked;
+  });
+  localStorage.setItem('reportConfig', JSON.stringify(config));
+  applyReportConfig();
+}
+
+function applyReportConfig() {
+  const config = loadReportConfig();
+  REPORT_SECTIONS.forEach(key => {
+    const el = document.getElementById('report-' + key);
+    if (el) el.style.display = config[key] ? '' : 'none';
+    const cfg = document.getElementById('cfg-' + key);
+    if (cfg) cfg.checked = config[key];
+  });
+}
+
+// Initialize config UI
+applyReportConfig();
+
+// Restore saved tab (visual only, don't trigger loadReport yet)
+const savedTab = localStorage.getItem('activeTab') || 'records';
+document.querySelectorAll('.tab').forEach((el, i) => el.classList.toggle('active', ['records','report','settings'][i] === savedTab));
+['records','report','settings'].forEach(t => document.getElementById('tab-'+t).classList.toggle('hidden', t !== savedTab));
+
+// Load data, then render report if needed
+async function initApp() {
+  await loadPrices();
+  await loadMonths();
+  if (savedTab === 'report') {
+    await loadReport();
+  }
+}
+initApp();
 </script>
 </body>
 </html>
