@@ -1,0 +1,649 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>记账账本</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="theme-toggle" onclick="toggleTheme()">
+  <span class="icon" id="themeIcon">🌙</span>
+  <span id="themeLabel">深色</span>
+</div>
+<div class="container">
+  <h1>📒 记账<span>账本</span></h1>
+
+  <div class="tab-bar">
+    <div class="tab active" onclick="switchTab('records')">📝 记录</div>
+    <div class="tab" onclick="switchTab('report')">📈 报表</div>
+    <div class="tab" onclick="switchTab('settings')">⚙️ 设置</div>
+  </div>
+
+  <!-- Records Tab -->
+  <div id="tab-records">
+    <div class="card">
+      <div class="toolbar">
+        <div style="display:flex;gap:8px;align-items:center;">
+          <select id="monthSelect" onchange="loadRecords()"></select>
+          <button class="btn btn-outline" onclick="createMonth()">+ 新月</button>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-primary" onclick="openBatchModal()">📋 批量录入</button>
+          <button class="btn btn-danger" id="batchDelBtn" onclick="batchDelete()" style="display:none;">🗑️ 删除选中</button>
+          <button class="btn btn-success" onclick="exportExcel()">📥 导出 Excel</button>
+        </div>
+      </div>
+      <div class="row" style="margin-top:8px;">
+        <div class="form-group" style="flex:0.6;">
+          <label>号期</label>
+          <input type="text" id="inputDate" placeholder="7.1">
+        </div>
+        <div class="form-group" style="flex:1.5;">
+          <label>原始数据（空格或+分隔，*表示倍数）</label>
+          <input type="text" id="inputRaw" placeholder="750*5+422 或 183包">
+        </div>
+        <div class="form-group" style="flex:0.8;">
+          <label>单价(元/吨)</label>
+          <div class="price-btns" id="inputPriceBtns"></div>
+        </div>
+        <button class="btn btn-primary" onclick="addRecord()" style="margin-bottom:1px;">添加</button>
+      </div>
+    </div>
+
+    <div class="card table-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:30px;"><input type="checkbox" id="selectAll" onchange="toggleSelectAll()"></th><th>号期</th><th>原始数据</th><th>合计(kg)</th><th>吨数</th><th>单价</th><th>金额(元)</th><th></th></tr>
+        </thead>
+        <tbody id="recordsBody"></tbody>
+        <tfoot id="recordsFoot"></tfoot>
+      </table>
+      <div id="emptyMsg" style="text-align:center;padding:30px;color:var(--muted);">暂无数据，请添加记录</div>
+    </div>
+  </div>
+
+  <!-- Report Tab -->
+  <div id="tab-report" class="hidden">
+    <div class="card">
+      <div class="toolbar">
+        <div style="display:flex;gap:8px;align-items:center;">
+          <label>年份：</label>
+          <select id="yearSelect" onchange="loadReport()"></select>
+        </div>
+        <button class="btn btn-success" onclick="exportReport()">📥 导出年报表</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:10px;">📊 月度汇总</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>月份</th><th>天数</th><th>总kg</th><th>总吨</th><th>总金额(元)</th></tr></thead>
+          <tbody id="reportBody"></tbody>
+          <tfoot id="reportFoot"></tfoot>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:10px;">📈 月度趋势</h3>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:280px;">
+          <canvas id="chartTons"></canvas>
+        </div>
+        <div style="flex:1;min-width:280px;">
+          <canvas id="chartAmount"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Tab -->
+  <div id="tab-settings" class="hidden">
+    <div class="card">
+      <h3 style="margin-bottom:10px;">⚙️ 单价管理</h3>
+      <div class="row">
+        <div class="form-group" style="flex:0.5;">
+          <label>新增单价(元/吨)</label>
+          <input type="number" id="newPrice" placeholder="如 200">
+        </div>
+        <button class="btn btn-primary" onclick="addPrice()">添加</button>
+      </div>
+      <div id="priceList" style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header" id="modalTitle">新建月份</div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">取消</button>
+      <button class="btn btn-primary" id="modalConfirm" onclick="modalConfirmFn()">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- Batch Modal -->
+<div class="modal-overlay" id="batchOverlay" onclick="closeBatchModal()">
+  <div class="modal modal-wide" onclick="event.stopPropagation()">
+    <div class="modal-header">📋 批量录入 - <span id="batchMonth"></span></div>
+    <div class="modal-body" style="max-height:65vh;overflow-y:auto;padding:0;">
+      <table class="batch-table">
+        <thead>
+          <tr>
+            <th style="width:60px;">号期</th>
+            <th>原始数据</th>
+            <th style="width:80px;">合计(kg)</th>
+            <th style="width:70px;">吨数</th>
+            <th style="width:140px;">单价</th>
+            <th style="width:80px;">金额</th>
+          </tr>
+        </thead>
+        <tbody id="batchBody"></tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <div style="flex:1;font-size:13px;color:var(--muted);">
+        💡 填写原始数据后自动计算，留空的行会跳过
+      </div>
+      <button class="btn btn-outline" onclick="closeBatchModal()">取消</button>
+      <button class="btn btn-primary" onclick="submitBatch()">✅ 确认提交</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API = '';
+let prices = [];
+let currentMonth = '';
+let selectedPrice = null;
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((el, i) => el.classList.toggle('active', ['records','report','settings'][i] === tab));
+  ['records','report','settings'].forEach(t => document.getElementById('tab-'+t).classList.toggle('hidden', t !== tab));
+  if (tab === 'report') loadReport();
+}
+
+async function loadPrices() {
+  prices = await (await fetch(API+'/api/prices')).json();
+  renderPriceBtns();
+  renderPriceList();
+}
+
+function renderPriceBtns() {
+  const container = document.getElementById('inputPriceBtns');
+  if (!selectedPrice || !prices.includes(selectedPrice)) selectedPrice = prices[0];
+  container.innerHTML = prices.map(p =>
+    `<div class="price-btn ${p===selectedPrice?'active':''}" onclick="selectPrice(${p})">${p}</div>`
+  ).join('');
+}
+
+function selectPrice(p) {
+  selectedPrice = p;
+  document.querySelectorAll('.price-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent == p);
+  });
+}
+
+function renderPriceList() {
+  document.getElementById('priceList').innerHTML = prices.map(p =>
+    `<span style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:var(--surface2);border:1px solid var(--border);font-size:14px;font-weight:500;">${p}元/吨 <button class="del-btn" onclick="deletePrice(${p})">×</button></span>`
+  ).join('');
+}
+
+async function addPrice() {
+  const v = parseInt(document.getElementById('newPrice').value);
+  if (!v) return;
+  await fetch(API+'/api/prices', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({price:v})});
+  document.getElementById('newPrice').value = '';
+  selectedPrice = v;
+  await loadPrices();
+  toast('单价已添加');
+}
+
+async function deletePrice(p) {
+  showModal({
+    title: `确认删除 ${p} 元/吨？`,
+    body: '<p style="color:var(--muted);">删除后不可恢复，确定要删除吗？</p>',
+    confirmText: '删除',
+    danger: true,
+    onConfirm: async () => {
+      await fetch(API+'/api/prices/'+p, {method:'DELETE'});
+      await loadPrices();
+      toast('已删除');
+    }
+  });
+}
+
+async function loadMonths() {
+  const months = await (await fetch(API+'/api/months')).json();
+  const sel = document.getElementById('monthSelect');
+  const yearSel = document.getElementById('yearSelect');
+  sel.innerHTML = months.map(m => `<option value="${m}">${m}</option>`).join('');
+  const years = [...new Set(months.map(m => m.split('-')[0]))].sort().reverse();
+  yearSel.innerHTML = years.map(y => `<option value="${y}">${y}年</option>`).join('');
+  currentMonth = months[0] || '';
+  if (currentMonth) loadRecords();
+}
+
+let modalCallback = null;
+
+function showModal({title, body, confirmText='确定', danger=false, onConfirm}) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = body;
+  document.getElementById('modalOverlay').classList.add('show');
+  const btn = document.getElementById('modalConfirm');
+  btn.textContent = confirmText;
+  btn.className = danger ? 'btn btn-danger' : 'btn btn-primary';
+  modalCallback = onConfirm;
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('show');
+  modalCallback = null;
+}
+
+function modalConfirmFn() {
+  if (modalCallback) modalCallback();
+  closeModal();
+}
+
+function createMonth() {
+  const now = new Date();
+  const curYear = now.getFullYear();
+  let yearOpts = '';
+  for (let y = curYear - 1; y <= curYear + 2; y++) {
+    yearOpts += `<option value="${y}" ${y===curYear?'selected':''}>${y}年</option>`;
+  }
+  let monthOpts = '';
+  for (let m = 1; m <= 12; m++) {
+    const val = String(m).padStart(2, '0');
+    monthOpts += `<option value="${val}" ${m===now.getMonth()+1?'selected':''}>${m}月</option>`;
+  }
+  showModal({
+    title: '新建月份',
+    body: `<div class="form-group"><label>选择年月</label><div style="display:flex;gap:8px;"><select id="modalYear">${yearOpts}</select><select id="modalMonth">${monthOpts}</select></div></div>`,
+    onConfirm: () => {
+      const y = document.getElementById('modalYear').value;
+      const m = document.getElementById('modalMonth').value;
+      const month = `${y}-${m}`;
+      const sel = document.getElementById('monthSelect');
+      if (![...sel.options].some(o => o.value === month)) {
+        const opt = document.createElement('option');
+        opt.value = month; opt.textContent = month;
+        sel.insertBefore(opt, sel.firstChild);
+      }
+      sel.value = month;
+      currentMonth = month;
+      loadRecords();
+      toast('月份已创建');
+    }
+  });
+}
+
+async function loadRecords() {
+  currentMonth = document.getElementById('monthSelect').value;
+  if (!currentMonth) return;
+  const records = await (await fetch(API+`/api/records?month=${currentMonth}`)).json();
+  const tbody = document.getElementById('recordsBody');
+  const foot = document.getElementById('recordsFoot');
+  const empty = document.getElementById('emptyMsg');
+
+  if (!records.length) {
+    tbody.innerHTML = '';
+    foot.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  tbody.innerHTML = records.map(r => {
+    const tons = (r.kg / 1000).toFixed(3);
+    const amount = (r.kg / 1000 * r.price).toFixed(2);
+    return `<tr>
+      <td><input type="checkbox" class="row-check" data-id="${r.id}" onchange="updateBatchDelBtn()"></td>
+      <td>${r.date}</td>
+      <td style="text-align:left;font-size:13px;">${r.raw}</td>
+      <td class="num">${r.kg.toLocaleString()}</td>
+      <td class="num">${tons}</td>
+      <td class="num">${r.price}</td>
+      <td class="num">${parseFloat(amount).toLocaleString('zh-CN', {minimumFractionDigits:2})}</td>
+      <td><button class="del-btn" onclick="deleteRecord('${r.id}')">×</button></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('selectAll').checked = false;
+  updateBatchDelBtn();
+
+  const totalKg = records.reduce((s,r) => s+r.kg, 0);
+  const totalTons = (totalKg/1000).toFixed(3);
+  const totalAmount = records.reduce((s,r) => s+r.kg/1000*r.price, 0).toFixed(2);
+  foot.innerHTML = `<tr class="summary-row">
+    <td></td>
+    <td>合计 ${records.length} 天</td>
+    <td></td>
+    <td class="num">${totalKg.toLocaleString()}</td>
+    <td class="num">${totalTons}</td>
+    <td></td>
+    <td class="num">${parseFloat(totalAmount).toLocaleString('zh-CN', {minimumFractionDigits:2})}</td>
+    <td></td>
+  </tr>`;
+}
+
+async function addRecord() {
+  const date = document.getElementById('inputDate').value.trim();
+  const raw = document.getElementById('inputRaw').value.trim();
+  if (!date || !raw) return alert('请填写号期和原始数据');
+  if (!currentMonth) return alert('请先选择或创建月份');
+  if (!selectedPrice) return alert('请先添加单价档位');
+  await fetch(API+'/api/records', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({month:currentMonth, date, raw, price:selectedPrice})});
+  document.getElementById('inputDate').value = '';
+  document.getElementById('inputRaw').value = '';
+  loadRecords();
+  toast('添加成功');
+}
+
+async function deleteRecord(id) {
+  showModal({
+    title: '确认删除这条记录？',
+    body: '<p style="color:var(--muted);">删除后不可恢复，确定要删除吗？</p>',
+    confirmText: '删除',
+    danger: true,
+    onConfirm: async () => {
+      await fetch(API+'/api/records/'+id, {method:'DELETE'});
+      loadRecords();
+      toast('已删除');
+    }
+  });
+}
+
+// ===== Batch Delete =====
+function toggleSelectAll() {
+  const checked = document.getElementById('selectAll').checked;
+  document.querySelectorAll('.row-check').forEach(cb => cb.checked = checked);
+  updateBatchDelBtn();
+}
+
+function updateBatchDelBtn() {
+  const checked = document.querySelectorAll('.row-check:checked').length;
+  const btn = document.getElementById('batchDelBtn');
+  btn.style.display = checked > 0 ? '' : 'none';
+  btn.textContent = checked > 0 ? `🗑️ 删除选中(${checked})` : '🗑️ 删除选中';
+}
+
+function batchDelete() {
+  const ids = [...document.querySelectorAll('.row-check:checked')].map(cb => cb.dataset.id);
+  if (!ids.length) return;
+  showModal({
+    title: `确认删除 ${ids.length} 条记录？`,
+    body: '<p style="color:var(--muted);">删除后不可恢复，确定要删除吗？</p>',
+    confirmText: '删除',
+    danger: true,
+    onConfirm: async () => {
+      for (const id of ids) {
+        await fetch(API+'/api/records/'+id, {method:'DELETE'});
+      }
+      loadRecords();
+      toast(`已删除 ${ids.length} 条记录`);
+    }
+  });
+}
+
+let chartTonsInstance = null;
+let chartAmountInstance = null;
+
+async function loadReport() {
+  const year = document.getElementById('yearSelect').value;
+  const report = await (await fetch(API+`/api/report?year=${year}`)).json();
+
+  const tbody = document.getElementById('reportBody');
+  const foot = document.getElementById('reportFoot');
+  tbody.innerHTML = report.months.map(m => `<tr>
+    <td>${m.month}</td><td>${m.days}</td>
+    <td class="num">${m.total_kg.toLocaleString()}</td>
+    <td class="num">${m.total_tons}</td>
+    <td class="num">${m.total_amount.toLocaleString('zh-CN', {minimumFractionDigits:2})}</td>
+  </tr>`).join('');
+
+  if (report.months.length) {
+    const tDays = report.months.reduce((s,m)=>s+m.days,0);
+    const tKg = report.months.reduce((s,m)=>s+m.total_kg,0);
+    const tTons = report.months.reduce((s,m)=>s+m.total_tons,0);
+    const tAmt = report.months.reduce((s,m)=>s+m.total_amount,0);
+    foot.innerHTML = `<tr class="summary-row">
+      <td>全年合计</td><td>${tDays}</td>
+      <td class="num">${tKg.toLocaleString()}</td>
+      <td class="num">${tTons.toFixed(3)}</td>
+      <td class="num">${tAmt.toLocaleString('zh-CN', {minimumFractionDigits:2})}</td>
+    </tr>`;
+  } else {
+    foot.innerHTML = '';
+  }
+
+  // Charts
+  const labels = report.months.map(m => m.month.split('-')[1] + '月');
+  const tonsData = report.months.map(m => m.total_tons);
+  const amountData = report.months.map(m => m.total_amount);
+
+  if (chartTonsInstance) chartTonsInstance.destroy();
+  if (chartAmountInstance) chartAmountInstance.destroy();
+
+  chartTonsInstance = new Chart(document.getElementById('chartTons'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: '金额',
+        data: amountData,
+        borderColor: '#4A90D9',
+        backgroundColor: 'rgba(74,144,217,0.1)',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 5,
+        pointBackgroundColor: '#4A90D9'
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: { display: true, text: '月度金额趋势', font: {size:14} },
+        legend: { display: false }
+      },
+      scales: {
+        y: { beginAtZero: true, title: { display: true, text: '元' } }
+      }
+    }
+  });
+
+  chartAmountInstance = new Chart(document.getElementById('chartAmount'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: '金额',
+        data: amountData,
+        backgroundColor: 'rgba(39,174,96,0.7)',
+        borderColor: '#27ae60',
+        borderWidth: 1,
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: { display: true, text: '月度金额对比', font: {size:14} },
+        legend: { display: false }
+      },
+      scales: {
+        y: { beginAtZero: true, title: { display: true, text: '元' } }
+      }
+    }
+  });
+}
+
+function exportExcel() {
+  if (!currentMonth) return alert('请先选择月份');
+  window.location.href = API+`/api/export?month=${currentMonth}`;
+}
+
+function exportReport() {
+  const year = document.getElementById('yearSelect').value;
+  window.location.href = API+`/api/export_report?year=${year}`;
+}
+
+// ===== Batch Import =====
+function parseRaw(rawStr) {
+  rawStr = (rawStr||'').trim().replace(/×/g,'*').replace(/x/g,'*').replace(/X/g,'*');
+  if (!rawStr) return {nums:[], bagKg:0, isBag:false};
+  let nums = [];
+  let bagKg = 0;
+  for (let part of rawStr.split('+')) {
+    part = part.trim();
+    if (!part) continue;
+    // Handle 包 unit: 183包 => kg = 183/40*1000
+    const bagMatch = part.match(/^(\d+)\s*包$/);
+    if (bagMatch) {
+      bagKg += Math.round(parseInt(bagMatch[1]) / 40 * 1000);
+      continue;
+    }
+    if (part.includes('*')) {
+      const [val, count] = part.split('*').map(s=>parseInt(s.trim()));
+      if (!isNaN(val)&&!isNaN(count)) for(let i=0;i<count;i++) nums.push(val);
+    } else {
+      for (let num of part.split(/[\s,，]+/)) {
+        num = num.trim();
+        if (num && !isNaN(parseInt(num))) nums.push(parseInt(num));
+      }
+    }
+  }
+  return {nums, bagKg, isBag: bagKg > 0 && nums.length === 0};
+}
+
+function openBatchModal() {
+  if (!currentMonth) return alert('请先选择月份');
+  if (!prices.length) return alert('请先添加单价档位');
+  document.getElementById('batchMonth').textContent = currentMonth;
+  const tbody = document.getElementById('batchBody');
+  const [year, month] = currentMonth.split('-').map(Number);
+  const daysInMonth = new Date(year, month, 0).getDate();
+  let html = '';
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = `${month}.${d}`;
+    const priceBtns = prices.map((p,i) =>
+      `<span class="price-mini ${i===0?'active':''}" data-day="${d}" data-price="${p}" onclick="batchSelectPrice(${d},${p})">${p}</span>`
+    ).join(' ');
+    html += `<tr id="batchRow${d}">
+      <td style="font-weight:600;text-align:center;">${dateStr}</td>
+      <td><input type="text" id="batchRaw${d}" placeholder="如 750×5+422" oninput="calcBatchRow(${d})"></td>
+      <td class="calculated" id="batchKg${d}">-</td>
+      <td class="calculated" id="batchTons${d}">-</td>
+      <td class="price-cell">${priceBtns}</td>
+      <td class="calculated" id="batchAmt${d}">-</td>
+    </tr>`;
+  }
+  tbody.innerHTML = html;
+  document.getElementById('batchOverlay').classList.add('show');
+}
+
+function closeBatchModal() {
+  document.getElementById('batchOverlay').classList.remove('show');
+}
+
+function batchSelectPrice(day, price) {
+  document.querySelectorAll(`.price-mini[data-day="${day}"]`).forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.dataset.price) === price);
+  });
+  calcBatchRow(day);
+}
+
+function calcBatchRow(day) {
+  const raw = document.getElementById(`batchRaw${day}`).value;
+  const {nums, bagKg} = parseRaw(raw);
+  const row = document.getElementById(`batchRow${day}`);
+  const priceEl = document.querySelector(`.price-mini.active[data-day="${day}"]`);
+  const price = priceEl ? parseInt(priceEl.dataset.price) : prices[0];
+
+  const kg = nums.reduce((s,n)=>s+n,0) + bagKg;
+  if (!kg) {
+    document.getElementById(`batchKg${day}`).textContent = '-';
+    document.getElementById(`batchTons${day}`).textContent = '-';
+    document.getElementById(`batchAmt${day}`).textContent = '-';
+    row.classList.remove('batch-row-empty');
+    return;
+  }
+  const tons = kg/1000;
+  const amt = tons*price;
+  document.getElementById(`batchKg${day}`).textContent = kg.toLocaleString();
+  document.getElementById(`batchTons${day}`).textContent = tons.toFixed(3);
+  document.getElementById(`batchAmt${day}`).textContent = amt.toFixed(2);
+  row.classList.remove('batch-row-empty');
+}
+
+async function submitBatch() {
+  const [year, month] = currentMonth.split('-').map(Number);
+  const daysInMonth = new Date(year, month, 0).getDate();
+  let count = 0;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const raw = document.getElementById(`batchRaw${d}`).value.trim();
+    if (!raw) continue;
+    const priceEl = document.querySelector(`.price-mini.active[data-day="${d}"]`);
+    const price = priceEl ? parseInt(priceEl.dataset.price) : prices[0];
+    const dateStr = `${month}.${d}`;
+    await fetch(API+'/api/records', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({month:currentMonth, date:dateStr, raw, price})
+    });
+    count++;
+  }
+  closeBatchModal();
+  loadRecords();
+  toast(`已批量添加 ${count} 条记录`);
+}
+
+document.getElementById('inputRaw').addEventListener('keydown', e => {
+  if (e.key === 'Enter') addRecord();
+});
+
+// Theme Toggle
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
+  const icon = document.getElementById('themeIcon');
+  const label = document.getElementById('themeLabel');
+  if (theme === 'light') {
+    icon.textContent = '☀️';
+    label.textContent = '浅色';
+  } else {
+    icon.textContent = '🌙';
+    label.textContent = '深色';
+  }
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'dark';
+  setTheme(current === 'dark' ? 'light' : 'dark');
+}
+
+// Load saved theme
+const savedTheme = localStorage.getItem('theme') || 'dark';
+setTheme(savedTheme);
+
+loadPrices().then(loadMonths);
+</script>
+</body>
+</html>
