@@ -289,6 +289,21 @@ tbody tr:nth-child(even):hover td {
 }
 .del-btn:hover { opacity: 1; }
 
+/* 批量表格行内小按钮（追加/删除） */
+.mini-btn {
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  opacity: 0.7;
+  transition: 0.15s;
+}
+.mini-btn:hover { opacity: 1; border-color: var(--accent); }
+
 /* 单价按钮 */
 .price-btns { display: flex; gap: 6px; flex-wrap: wrap; }
 .price-btn {
@@ -730,6 +745,34 @@ tbody tr:nth-child(even):hover td {
   color: #0F0F12;
 }
 [data-theme="dark"] .batch-table .price-mini.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0F0F12;
+}
+
+/* 批量弹窗顶部单价选择按钮 */
+#batchToolPrice .bp-btn {
+  padding: 5px 14px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text);
+  border-radius: 4px;
+  transition: 0.15s;
+  user-select: none;
+  line-height: 1;
+}
+#batchToolPrice .bp-btn:hover { border-color: var(--accent); color: var(--accent); }
+#batchToolPrice .bp-btn.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 0 0 2px var(--accent-dim);
+}
+[data-theme="dark"] #batchToolPrice .bp-btn.active {
   background: var(--accent);
   border-color: var(--accent);
   color: #0F0F12;

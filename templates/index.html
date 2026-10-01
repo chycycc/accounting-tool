@@ -4,10 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>记账账本</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📒</text></svg>">
+<script src="/static/chart.umd.min.js"></script>
+<link rel="stylesheet" href="/static/fonts/fonts.css">
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
@@ -254,6 +253,14 @@
   <div class="modal modal-wide" onclick="event.stopPropagation()">
     <div class="modal-header">📋 批量录入 - <span id="batchMonth"></span></div>
     <div class="modal-body" style="max-height:65vh;overflow-y:auto;padding:0;">
+      <div style="padding:10px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:0;background:var(--surface);z-index:2;">
+        <span style="font-size:12px;color:var(--muted);font-weight:600;">批量单价</span>
+        <div id="batchToolPrice" style="display:flex;gap:6px;"></div>
+        <span id="bpCurrent" style="font-size:12px;font-weight:700;color:var(--accent);">当前：150元/吨</span>
+        <button class="btn btn-outline" style="padding:4px 10px;font-size:12px;" onclick="applyPriceToAll()">应用到全部</button>
+        <button class="btn btn-outline" style="padding:4px 10px;font-size:12px;" onclick="applyPriceToEmpty()">仅应用到空行</button>
+        <span style="font-size:11px;color:var(--muted);">先选单价 → 点应用；「仅空行」不覆盖已填数据</span>
+      </div>
       <table class="batch-table">
         <thead>
           <tr>
@@ -263,6 +270,7 @@
             <th style="width:70px;">吨数</th>
             <th style="width:140px;">单价</th>
             <th style="width:80px;">金额</th>
+            <th style="width:44px;"></th>
           </tr>
         </thead>
         <tbody id="batchBody"></tbody>
@@ -725,6 +733,71 @@ function parseRaw(rawStr) {
   return {nums, bagKg, isBag: bagKg > 0 && nums.length === 0};
 }
 
+let batchRowSeq = 0;
+
+let batchToolPrice = null;
+
+function renderBatchToolPrice() {
+  const box = document.getElementById('batchToolPrice');
+  if (!box) return;
+  box.innerHTML = prices.map((p,i) =>
+    `<span class="bp-btn ${i===0?'active':''}" data-bp="${p}" onclick="setBatchToolPrice(${p})">${p}</span>`
+  ).join('');
+  batchToolPrice = prices[0];
+  updateBpCurrent();
+}
+
+function updateBpCurrent() {
+  const el = document.getElementById('bpCurrent');
+  if (el) el.textContent = '当前：' + (batchToolPrice || '-') + '元/吨';
+}
+
+function setBatchToolPrice(p) {
+  batchToolPrice = p;
+  document.querySelectorAll('#batchToolPrice .bp-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.bp)===p));
+  updateBpCurrent();
+}
+
+function setRowPrice(k, p) {
+  document.querySelectorAll(`.price-mini[data-row="${k}"]`).forEach(b => b.classList.toggle('active', parseInt(b.dataset.price)===p));
+  calcBatchRow(k);
+}
+
+function applyPriceToAll() {
+  if (!batchToolPrice) return alert('请先选择单价');
+  document.querySelectorAll('#batchBody .brow').forEach(row => setRowPrice(row.dataset.row, batchToolPrice));
+}
+
+function applyPriceToEmpty() {
+  if (!batchToolPrice) return alert('请先选择单价');
+  document.querySelectorAll('#batchBody .brow').forEach(row => {
+    const k = row.dataset.row;
+    if (!document.getElementById('batchRaw'+k).value.trim()) setRowPrice(k, batchToolPrice);
+  });
+}
+
+
+function makeBatchRowHtml(day, rowKey, isFirst, defaultPrice) {
+  const [year, month] = currentMonth.split('-').map(Number);
+  const dateStr = `${month}.${day}`;
+  const priceBtns = prices.map((p,i) => {
+    const active = isFirst ? i===0 : p===defaultPrice;
+    return `<span class="price-mini ${active?'active':''}" data-row="${rowKey}" data-day="${day}" data-price="${p}" onclick="batchSelectPrice('${rowKey}',${p})">${p}</span>`;
+  }).join(' ');
+  const opBtn = isFirst
+    ? `<button class="mini-btn" title="追加一行（同号期多档）" onclick="addBatchRow(${day})">＋</button>`
+    : `<button class="mini-btn" title="删除此行" onclick="removeBatchRow('${rowKey}')">×</button>`;
+  return `<tr class="brow" data-day="${day}" data-row="${rowKey}">
+    <td style="font-weight:600;text-align:center;">${dateStr}</td>
+    <td><input type="text" id="batchRaw${rowKey}" placeholder="如 750×5 或 183b" oninput="calcBatchRow('${rowKey}')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></td>
+    <td class="calculated" id="batchKg${rowKey}">-</td>
+    <td class="calculated" id="batchTons${rowKey}">-</td>
+    <td class="price-cell">${priceBtns}</td>
+    <td class="calculated" id="batchAmt${rowKey}">-</td>
+    <td style="text-align:center;">${opBtn}</td>
+  </tr>`;
+}
+
 function openBatchModal() {
   if (!currentMonth) return alert('请先选择月份');
   if (!prices.length) return alert('请先添加单价档位');
@@ -732,69 +805,75 @@ function openBatchModal() {
   const tbody = document.getElementById('batchBody');
   const [year, month] = currentMonth.split('-').map(Number);
   const daysInMonth = new Date(year, month, 0).getDate();
+  batchRowSeq = 0;
+  renderBatchToolPrice();
   let html = '';
   for (let d = 1; d <= daysInMonth; d++) {
-    const dateStr = `${month}.${d}`;
-    const priceBtns = prices.map((p,i) =>
-      `<span class="price-mini ${i===0?'active':''}" data-day="${d}" data-price="${p}" onclick="batchSelectPrice(${d},${p})">${p}</span>`
-    ).join(' ');
-    html += `<tr id="batchRow${d}">
-      <td style="font-weight:600;text-align:center;">${dateStr}</td>
-      <td><input type="text" id="batchRaw${d}" placeholder="如 750×5 或 183b" oninput="calcBatchRow(${d})" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></td>
-      <td class="calculated" id="batchKg${d}">-</td>
-      <td class="calculated" id="batchTons${d}">-</td>
-      <td class="price-cell">${priceBtns}</td>
-      <td class="calculated" id="batchAmt${d}">-</td>
-    </tr>`;
+    html += makeBatchRowHtml(d, 'b' + (++batchRowSeq), true);
   }
   tbody.innerHTML = html;
   document.getElementById('batchOverlay').classList.add('show');
+}
+
+function addBatchRow(day) {
+  const rows = document.querySelectorAll(`#batchBody .brow[data-day="${day}"]`);
+  if (!rows.length) return;
+  const first = rows[0];
+  const actEl = document.querySelector(`.price-mini.active[data-row="${first.dataset.row}"]`);
+  const defaultPrice = actEl ? parseInt(actEl.dataset.price) : prices[0];
+  const rowKey = 'b' + (++batchRowSeq);
+  const last = rows[rows.length - 1];
+  last.insertAdjacentHTML('afterend', makeBatchRowHtml(day, rowKey, false, defaultPrice));
+}
+
+function removeBatchRow(rowKey) {
+  const tr = document.querySelector(`#batchBody .brow[data-row="${rowKey}"]`);
+  if (tr) tr.remove();
 }
 
 function closeBatchModal() {
   document.getElementById('batchOverlay').classList.remove('show');
 }
 
-function batchSelectPrice(day, price) {
-  document.querySelectorAll(`.price-mini[data-day="${day}"]`).forEach(btn => {
+function batchSelectPrice(rowKey, price) {
+  document.querySelectorAll(`.price-mini[data-row="${rowKey}"]`).forEach(btn => {
     btn.classList.toggle('active', parseInt(btn.dataset.price) === price);
   });
-  calcBatchRow(day);
+  calcBatchRow(rowKey);
 }
 
-function calcBatchRow(day) {
-  const raw = document.getElementById(`batchRaw${day}`).value;
+function calcBatchRow(rowKey) {
+  const raw = document.getElementById(`batchRaw${rowKey}`).value;
   const {nums, bagKg} = parseRaw(raw);
-  const row = document.getElementById(`batchRow${day}`);
-  const priceEl = document.querySelector(`.price-mini.active[data-day="${day}"]`);
+  const priceEl = document.querySelector(`.price-mini.active[data-row="${rowKey}"]`);
   const price = priceEl ? parseInt(priceEl.dataset.price) : prices[0];
 
   const kg = nums.reduce((s,n)=>s+n,0) + bagKg;
   if (!kg) {
-    document.getElementById(`batchKg${day}`).textContent = '-';
-    document.getElementById(`batchTons${day}`).textContent = '-';
-    document.getElementById(`batchAmt${day}`).textContent = '-';
-    row.classList.remove('batch-row-empty');
+    document.getElementById(`batchKg${rowKey}`).textContent = '-';
+    document.getElementById(`batchTons${rowKey}`).textContent = '-';
+    document.getElementById(`batchAmt${rowKey}`).textContent = '-';
     return;
   }
   const tons = kg/1000;
   const amt = tons*price;
-  document.getElementById(`batchKg${day}`).textContent = kg.toLocaleString();
-  document.getElementById(`batchTons${day}`).textContent = tons.toFixed(3);
-  document.getElementById(`batchAmt${day}`).textContent = amt.toFixed(2);
-  row.classList.remove('batch-row-empty');
+  document.getElementById(`batchKg${rowKey}`).textContent = kg.toLocaleString();
+  document.getElementById(`batchTons${rowKey}`).textContent = tons.toFixed(3);
+  document.getElementById(`batchAmt${rowKey}`).textContent = amt.toFixed(2);
 }
 
 async function submitBatch() {
   const [year, month] = currentMonth.split('-').map(Number);
-  const daysInMonth = new Date(year, month, 0).getDate();
+  const rows = document.querySelectorAll('#batchBody .brow');
   let count = 0;
-  for (let d = 1; d <= daysInMonth; d++) {
-    const raw = document.getElementById(`batchRaw${d}`).value.trim();
+  for (const row of rows) {
+    const rowKey = row.dataset.row;
+    const day = row.dataset.day;
+    const raw = document.getElementById(`batchRaw${rowKey}`).value.trim();
     if (!raw) continue;
-    const priceEl = document.querySelector(`.price-mini.active[data-day="${d}"]`);
+    const priceEl = document.querySelector(`.price-mini.active[data-row="${rowKey}"]`);
     const price = priceEl ? parseInt(priceEl.dataset.price) : prices[0];
-    const dateStr = `${month}.${d}`;
+    const dateStr = `${month}.${day}`;
     await fetch(API+'/api/records', {
       method:'POST',
       headers:{'Content-Type':'application/json'},

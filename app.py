@@ -98,11 +98,18 @@ def get_months():
     return jsonify(months)
 
 
+def date_sort_key(r):
+    """按日期排序，如 7.1, 7.2, 7.10, 7.12"""
+    parts = r['date'].split('.')
+    return (int(parts[0]), int(parts[1])) if len(parts) == 2 else (0, 0)
+
+
 @app.route('/api/records', methods=['GET'])
 def get_records():
     month = request.args.get('month')
     data = load_data()
     records = data['records'].get(month, [])
+    records.sort(key=date_sort_key)
     return jsonify(records)
 
 
@@ -205,7 +212,7 @@ def get_top10():
 def export_excel():
     month = request.args.get('month')
     data = load_data()
-    records = data['records'].get(month, [])
+    records = sorted(data['records'].get(month, []), key=date_sort_key)
 
     wb = Workbook()
     ws = wb.active
