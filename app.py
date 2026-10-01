@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import shutil
 import uuid
 from datetime import datetime
 from io import BytesIO
@@ -12,6 +13,8 @@ from openpyxl.styles import Font, Alignment, Border, Side, PatternFill
 app = Flask(__name__)
 
 DATA_FILE = os.path.join(os.path.dirname(__file__), 'data.json')
+BACKUP_DIR = os.path.join(os.path.dirname(__file__), 'backups')
+BACKUP_KEEP = 20  # 自动备份保留份数
 
 
 def load_data():
@@ -22,6 +25,18 @@ def load_data():
 
 
 def save_data(data):
+    # 保存前自动备份当前版本，保留最近 BACKUP_KEEP 份
+    if os.path.exists(DATA_FILE):
+        try:
+            os.makedirs(BACKUP_DIR, exist_ok=True)
+            ts = datetime.now().strftime('%Y%m%d_%H%M%S_%f')
+            backup_path = os.path.join(BACKUP_DIR, f'data_{ts}.json')
+            shutil.copy2(DATA_FILE, backup_path)
+            backups = sorted(os.listdir(BACKUP_DIR))
+            for old in backups[:-BACKUP_KEEP]:
+                os.remove(os.path.join(BACKUP_DIR, old))
+        except OSError:
+            pass  # 备份失败不影响主流程
     with open(DATA_FILE, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
@@ -123,6 +138,8 @@ def add_record():
     price = int(req.get('price'))
 
     kg = parse_raw_input(raw)
+    if kg <= 0:
+        return jsonify({'error': f'无法识别原始数据: {raw}'}), 400
 
     record = {
         'id': str(uuid.uuid4())[:8],
@@ -148,6 +165,29 @@ def delete_record(record_id):
                 records.pop(i)
                 save_data(data)
                 return jsonify({'ok': True})
+    return jsonify({'error': 'not found'}), 404
+
+
+@app.route('/api/records/<record_id>', methods=['PUT'])
+def update_record(record_id):
+    data = load_data()
+    req = request.json
+    raw = (req.get('raw') or '').strip()
+    try:
+        price = int(req.get('price'))
+    except (TypeError, ValueError):
+        return jsonify({'error': '单价无效'}), 400
+    kg = parse_raw_input(raw)
+    if kg <= 0:
+        return jsonify({'error': f'无法识别原始数据: {raw}'}), 400
+    for month, records in data['records'].items():
+        for r in records:
+            if r['id'] == record_id:
+                r['raw'] = raw
+                r['kg'] = kg
+                r['price'] = price
+                save_data(data)
+                return jsonify(r)
     return jsonify({'error': 'not found'}), 404
 
 
@@ -383,5 +423,32 @@ def export_report_excel():
                      as_attachment=True, download_name=f'{year}年报表.xlsx')
 
 
+@app.route('/api/export_data', methods=['GET'])
+def export_data():
+    data = load_data()
+    buf = BytesIO()
+    buf.write(json.dumps(data, ensure_ascii=False, indent=2).encode('utf-8'))
+    buf.seek(0)
+    return send_file(buf, mimetype='application/json', as_attachment=True,
+                     download_name='账本数据备份.json')
+
+
+@app.route('/api/import_data', methods=['POST'])
+def import_data():
+    f = request.files.get('file')
+    if not f:
+        return jsonify({'error': '未选择文件'}), 400
+    try:
+        data = json.loads(f.read().decode('utf-8'))
+    except Exception:
+        return jsonify({'error': '文件不是有效的 JSON'}), 400
+    if not isinstance(data, dict) or 'records' not in data or 'prices' not in data:
+        return jsonify({'error': '数据格式不正确，请上传本工具的备份文件'}), 400
+    save_data(data)
+    return jsonify({'ok': True, 'message': '导入成功'})
+
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    # 默认开启调试，生产环境用环境变量 FLASK_DEBUG=0 关闭
+    debug = os.environ.get('FLASK_DEBUG', '1') == '1'
+    app.run(host='0.0.0.0', port=5000, debug=debug)
