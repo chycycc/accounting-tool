@@ -777,3 +777,13 @@ tbody tr:nth-child(even):hover td {
   border-color: var(--accent);
   color: #0F0F12;
 }
+
+/* 通用确认框始终置顶（高于批量/额外弹窗） */
+#modalOverlay { z-index: 1300; }
+
+/* 额外弹窗单价按钮高亮 */
+#extrasPriceBtns .price-btn.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}

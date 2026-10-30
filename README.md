@@ -22,6 +22,14 @@
 - **按单价拆分**：环形图展示各单价金额占比，中心显示总金额，悬停显示占比
 - **TOP 10 单日**：按金额排行，直接显示当日原始录入数据
 
+### 💰 额外账本
+- 主业之外的第二套账本（同样按吨×单价计算），与主业**完全隔离**
+- 独立单价档位，独立录入、独立列表
+- 批量录入支持**自由加行**：日期不固定，按实际天数填（如 5、10.5 都可）
+- 记录可编辑 ✎ / 删除
+- 月度 Excel 导出时**右侧并排展示**当月额外记录
+- 报表融汇：月度汇总增加「额外金额」「当月合计（主业+额外）」列，年度报表同样并入
+
 ### 💾 数据安全
 - **自动备份**：每次保存前自动备份到 `backups/`，保留最近 20 份（微秒级时间戳，互不覆盖）
 - **整库备份**：设置页一键导出 `账本数据备份.json` / 导入恢复（导入前有覆盖确认）
@@ -103,6 +111,18 @@ accounting-tool/
         "price": 150
       }
     ]
+  },
+  "extras_prices": [120],
+  "extras_records": {
+    "2026-10": [
+      {
+        "id": "ext001",
+        "date": "10.5",
+        "raw": "400+300",
+        "kg": 700,
+        "price": 120
+      }
+    ]
   }
 }
 ```
@@ -126,6 +146,12 @@ accounting-tool/
 | GET | `/api/export_report?year=2026` | 导出年度 Excel |
 | GET | `/api/export_data` | 导出整库 JSON 备份 |
 | POST | `/api/import_data` | 导入整库 JSON 备份（覆盖） |
+| GET/POST | `/api/extras/prices` | 额外单价列表 / 添加 |
+| DELETE | `/api/extras/prices/<price>` | 删除额外单价 |
+| GET | `/api/extras/months` | 额外账本月份列表 |
+| GET/POST | `/api/extras/records?month=` | 额外记录列表 / 单条添加 |
+| POST | `/api/extras/records/batch` | 额外记录批量添加（无效行跳过） |
+| PUT/DELETE | `/api/extras/records/<id>` | 编辑 / 删除额外记录 |
 
 ## 技术栈
 

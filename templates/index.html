@@ -32,6 +32,7 @@
           <button class="btn btn-primary" onclick="createMonth()">+ 新月</button>
         </div>
         <div style="display:flex;gap:8px;">
+          <button class="btn btn-primary" onclick="openExtrasModal()">💰 额外</button>
           <button class="btn btn-primary" onclick="openBatchModal()">📋 批量录入</button>
           <button class="btn btn-danger" id="batchDelBtn" onclick="batchDelete()" style="display:none;">🗑️ 删除选中</button>
           <button class="btn btn-primary" onclick="exportExcel()">📥 导出 Excel</button>
@@ -82,6 +83,21 @@
         <tfoot id="recordsFoot"></tfoot>
       </table>
       <div id="emptyMsg" style="text-align:center;padding:30px;color:var(--muted);">暂无数据，请添加记录</div>
+    </div>
+
+    <!-- 本月额外记录（主记录表格下方） -->
+    <div id="extras-section" class="card" style="display:none;margin-top:12px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <h3 style="margin:0;">💰 额外记录</h3>
+        <span id="extrasPageCount" style="font-size:12px;color:var(--muted);"></span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>日期</th><th>原始数据</th><th>合计(kg)</th><th>吨数</th><th>单价</th><th>金额(元)</th><th></th></tr></thead>
+          <tbody id="extrasPageBody"></tbody>
+          <tfoot id="extrasPageFoot"></tfoot>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -141,7 +157,7 @@
       <h3 style="margin-bottom:10px;">📊 月度汇总</h3>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>月份</th><th>天数</th><th>总kg</th><th>总吨</th><th>总金额(元)</th></tr></thead>
+          <thead><tr><th>月份</th><th>天数</th><th>总kg</th><th>总吨</th><th>主业金额(元)</th><th>额外金额(元)</th><th>当月合计(元)</th></tr></thead>
           <tbody id="reportBody"></tbody>
           <tfoot id="reportFoot"></tfoot>
         </table>
@@ -296,6 +312,38 @@
       </div>
       <button class="btn btn-outline" onclick="closeBatchModal()">取消</button>
       <button class="btn btn-primary" onclick="submitBatch()">✅ 确认提交</button>
+    </div>
+  </div>
+</div>
+
+<!-- Extras Modal（额外账本） -->
+<div class="modal-overlay" id="extrasOverlay" onclick="closeExtrasModal()">
+  <div class="modal modal-wide" onclick="event.stopPropagation()">
+    <div class="modal-header">💰 额外账本 - <span id="extrasMonth"></span></div>
+    <div class="modal-body" style="max-height:65vh;overflow-y:auto;padding:0;">
+      <div style="padding:12px;border-bottom:1px solid var(--border);">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <span style="font-size:12px;color:var(--muted);font-weight:600;">额外单价</span>
+          <input type="number" id="extrasNewPrice" placeholder="如 120" style="width:90px;padding:6px 8px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);">
+          <button class="btn btn-primary" style="padding:6px 12px;font-size:13px;" onclick="addExtrasPrice()">添加</button>
+        </div>
+        <div id="extrasPriceBtns" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;"></div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px;">额外账本使用独立单价，与主业互不影响</div>
+      </div>
+      <div style="padding:12px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">新增额外记录</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">日期不固定，按实际天数添加；每行填日期（如 5 或 10.5）+ 原始数据 + 选单价</div>
+        <button class="btn btn-outline" style="padding:5px 12px;font-size:13px;margin-bottom:8px;" onclick="addExtrasRow()">＋ 添加一行</button>
+        <table class="batch-table">
+          <thead><tr><th style="width:90px;">日期</th><th>原始数据</th><th style="width:80px;">合计(kg)</th><th style="width:70px;">吨数</th><th style="width:170px;">单价</th><th style="width:80px;">金额</th><th style="width:44px;"></th></tr></thead>
+          <tbody id="extrasInputBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div style="flex:1;font-size:13px;color:var(--muted);">💡 留空的行会跳过；额外账本与主业数据完全分开</div>
+      <button class="btn btn-outline" onclick="closeExtrasModal()">取消</button>
+      <button class="btn btn-primary" onclick="submitExtras()">✅ 提交额外</button>
     </div>
   </div>
 </div>
@@ -500,6 +548,7 @@ async function loadRecords() {
   } else {
     summary.style.display = 'none';
   }
+  loadExtrasPage();
 }
 
 const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -665,12 +714,12 @@ async function loadReport() {
   // ===== 1. Overview Cards =====
   if (config['overview'] && months.length) {
     document.getElementById('overview-year').textContent = year;
-    const tAmt = months.reduce((s,m)=>s+m.total_amount,0);
+    const tAmt = months.reduce((s,m)=>s+m.grand_amount,0);
     const tDays = months.reduce((s,m)=>s+m.days,0);
     const tTons = months.reduce((s,m)=>s+m.total_tons,0);
     const avgMonth = tAmt / months.length;
     const avgTons = tDays > 0 ? tTons / tDays : 0;
-    const sorted = [...months].sort((a,b)=>b.total_amount-a.total_amount);
+    const sorted = [...months].sort((a,b)=>b.grand_amount-a.grand_amount);
 
     // 主金额计数动画
     animateNumber(document.getElementById('stat-total'), tAmt, 1000, '¥');
@@ -679,8 +728,8 @@ async function loadReport() {
     document.getElementById('stat-avg-month').textContent = '¥' + fmt(avgMonth);
     document.getElementById('stat-avg-tons').textContent = avgTons.toFixed(1) + '吨';
     document.getElementById('stat-active-days').textContent = tDays + '天';
-    document.getElementById('stat-max-month').textContent = sorted[0] ? sorted[0].month.split('-')[1]+'月 ¥'+fmt(sorted[0].total_amount) : '-';
-    document.getElementById('stat-min-month').textContent = sorted.length ? sorted[sorted.length-1].month.split('-')[1]+'月 ¥'+fmt(sorted[sorted.length-1].total_amount) : '-';
+    document.getElementById('stat-max-month').textContent = sorted[0] ? sorted[0].month.split('-')[1]+'月 ¥'+fmt(sorted[0].grand_amount) : '-';
+    document.getElementById('stat-min-month').textContent = sorted.length ? sorted[sorted.length-1].month.split('-')[1]+'月 ¥'+fmt(sorted[sorted.length-1].grand_amount) : '-';
   }
 
   // ===== 2. Monthly Table =====
@@ -691,18 +740,24 @@ async function loadReport() {
     <td class="num">${m.total_kg.toLocaleString()}</td>
     <td class="num">${m.total_tons}</td>
     <td class="num">${fmt(m.total_amount)}</td>
+    <td class="num" style="color:var(--info,#2563EB);">${fmt(m.extra_amount||0)}</td>
+    <td class="num" style="font-weight:700;">${fmt(m.grand_amount)}</td>
   </tr>`).join('');
 
   if (months.length) {
     const tDays = months.reduce((s,m)=>s+m.days,0);
     const tKg = months.reduce((s,m)=>s+m.total_kg,0);
     const tTons = months.reduce((s,m)=>s+m.total_tons,0);
-    const tAmt = months.reduce((s,m)=>s+m.total_amount,0);
+    const tMain = months.reduce((s,m)=>s+m.total_amount,0);
+    const tExtra = months.reduce((s,m)=>s+(m.extra_amount||0),0);
+    const tAmt = months.reduce((s,m)=>s+m.grand_amount,0);
     foot.innerHTML = `<tr class="summary-row">
       <td>全年合计</td><td>${tDays} 天</td>
       <td class="num">${tKg.toLocaleString()} kg</td>
       <td class="num">${tTons.toFixed(3)} 吨</td>
-      <td class="num">${fmt(tAmt)} 元</td>
+      <td class="num">${fmt(tMain)}</td>
+      <td class="num" style="color:var(--info,#2563EB);">${fmt(tExtra)}</td>
+      <td class="num" style="font-weight:700;">${fmt(tAmt)} 元</td>
     </tr>`;
   } else {
     foot.innerHTML = '';
@@ -711,7 +766,7 @@ async function loadReport() {
   // ===== 3. Charts =====
   destroyCharts();
   const labels = months.map(m => m.month.split('-')[1] + '月');
-  const amountData = months.map(m => m.total_amount);
+  const amountData = months.map(m => m.grand_amount);
   const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#166534';
   const surfaceColor = getComputedStyle(document.documentElement).getPropertyValue('--surface').trim() || '#FFFFFF';
   Chart.defaults.font.family = "'Inter', 'JetBrains Mono', sans-serif";
@@ -763,8 +818,8 @@ async function loadReport() {
   if (config['comparison'] && months.length > 1) {
     const compLabels = months.slice(1).map(m => m.month.split('-')[1] + '月');
     const compData = months.slice(1).map((m, i) => {
-      const prev = months[i].total_amount;
-      return prev > 0 ? ((m.total_amount - prev) / prev * 100).toFixed(1) : 0;
+      const prev = months[i].grand_amount;
+      return prev > 0 ? ((m.grand_amount - prev) / prev * 100).toFixed(1) : 0;
     });
     chartInstances.comp = new Chart(document.getElementById('chartComparison'), {
       type: 'bar',
@@ -782,6 +837,215 @@ function exportExcel() {
 function exportReport() {
   const year = document.getElementById('yearSelect').value;
   window.location.href = API+`/api/export_report?year=${year}`;
+}
+
+// ===== Extras（额外账本）=====
+let extrasPrices = [];
+let extrasSelectedPrice = null;
+let extrasRowSeq = 0;
+let extrasById = {};
+
+async function loadExtrasPrices() {
+  extrasPrices = await (await fetch(API+'/api/extras/prices')).json();
+  if (!extrasSelectedPrice || !extrasPrices.includes(extrasSelectedPrice)) extrasSelectedPrice = extrasPrices[0] || null;
+  renderExtrasPriceBtns();
+}
+
+function renderExtrasPriceBtns() {
+  const box = document.getElementById('extrasPriceBtns');
+  if (!box) return;
+  box.innerHTML = extrasPrices.length
+    ? extrasPrices.map(p => `<span class="price-btn ${p===extrasSelectedPrice?'active':''}" onclick="selectExtrasPrice(${p})">${p}</span>`).join('')
+    : '<span style="font-size:12px;color:var(--muted);">暂无额外单价，请先添加</span>';
+}
+
+function selectExtrasPrice(p) { extrasSelectedPrice = p; renderExtrasPriceBtns(); }
+
+async function addExtrasPrice() {
+  const v = parseInt(document.getElementById('extrasNewPrice').value);
+  if (!v) return alert('请输入额外单价');
+  const res = await fetch(API+'/api/extras/prices', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({price:v})});
+  if (!res.ok) { const err = await res.json().catch(()=>({})); return alert(err.error || '添加失败'); }
+  document.getElementById('extrasNewPrice').value = '';
+  extrasSelectedPrice = v;
+  await loadExtrasPrices();
+  toast('额外单价已添加');
+}
+
+async function deleteExtrasPrice(p) {
+  showModal({
+    title: `确认删除额外单价 ${p} 元/吨？`,
+    body: '<p style="color:var(--muted);">删除后不可恢复，确定要删除吗？</p>',
+    confirmText: '删除',
+    danger: true,
+    onConfirm: async () => {
+      await fetch(API+'/api/extras/prices/'+p, {method:'DELETE'});
+      if (extrasSelectedPrice === p) extrasSelectedPrice = null;
+      await loadExtrasPrices();
+      toast('已删除');
+    }
+  });
+}
+
+async function loadExtrasPage() {
+  if (!currentMonth) return;
+  const records = await (await fetch(API+`/api/extras/records?month=${currentMonth}`)).json();
+  extrasById = {};
+  records.forEach(r => { extrasById[r.id] = r; });
+  const sec = document.getElementById('extras-section');
+  const tbody = document.getElementById('extrasPageBody');
+  const foot = document.getElementById('extrasPageFoot');
+  if (!records.length) {
+    sec.style.display = 'none';
+    return;
+  }
+  sec.style.display = '';
+  document.getElementById('extrasPageCount').textContent = `（${records.length} 条）`;
+  tbody.innerHTML = records.map(r => `<tr>
+    <td>${r.date}</td>
+    <td style="text-align:left;font-size:13px;">${esc(r.raw)}</td>
+    <td class="num">${r.kg.toLocaleString()}</td>
+    <td class="num">${(r.kg/1000).toFixed(3)}</td>
+    <td class="num">${r.price}</td>
+    <td class="num">${parseFloat(r.kg/1000*r.price).toLocaleString('zh-CN',{minimumFractionDigits:2})}</td>
+    <td style="white-space:nowrap;"><button class="mini-btn" title="编辑" onclick="editExtrasRecord('${r.id}')">✎</button> <button class="del-btn" onclick="deleteExtrasRecord('${r.id}')">×</button></td>
+  </tr>`).join('');
+  const tKg = records.reduce((s,r)=>s+r.kg,0);
+  const tAmt = records.reduce((s,r)=>s+r.kg/1000*r.price,0);
+  foot.innerHTML = `<tr class="summary-row">
+    <td>额外合计 ${records.length} 天</td>
+    <td></td>
+    <td class="num">${tKg.toLocaleString()} kg</td>
+    <td class="num">${(tKg/1000).toFixed(3)} 吨</td>
+    <td></td>
+    <td class="num">${parseFloat(tAmt).toLocaleString('zh-CN',{minimumFractionDigits:2})} 元</td>
+    <td></td>
+  </tr>`;
+}
+
+function openExtrasModal() {
+  if (!currentMonth) return alert('请先选择月份');
+  document.getElementById('extrasMonth').textContent = currentMonth;
+  document.getElementById('extrasOverlay').classList.add('show');
+  loadExtrasPrices();
+  extrasRowSeq = 0;
+  document.getElementById('extrasInputBody').innerHTML = makeExtrasRowHtml('e' + (++extrasRowSeq));
+}
+
+function closeExtrasModal() {
+  document.getElementById('extrasOverlay').classList.remove('show');
+}
+
+function makeExtrasRowHtml(rowKey) {
+  const priceBtns = extrasPrices.length
+    ? extrasPrices.map(p => `<span class="price-mini ${p===extrasSelectedPrice?'active':''}" data-row="${rowKey}" data-price="${p}" onclick="setExtrasRowPrice('${rowKey}',${p})">${p}</span>`).join(' ')
+    : '<span style="font-size:11px;color:var(--muted);">先添加单价</span>';
+  return `<tr class="erow" data-row="${rowKey}">
+    <td><input type="text" id="extrasDate${rowKey}" placeholder="如 5 或 10.5" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></td>
+    <td><input type="text" id="extrasRaw${rowKey}" placeholder="如 400+300" oninput="calcExtrasRow('${rowKey}')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></td>
+    <td class="calculated" id="extrasKg${rowKey}">-</td>
+    <td class="calculated" id="extrasTons${rowKey}">-</td>
+    <td class="price-cell">${priceBtns}</td>
+    <td class="calculated" id="extrasAmt${rowKey}">-</td>
+    <td style="text-align:center;"><button class="mini-btn" title="删除此行" onclick="removeExtrasRow('${rowKey}')">×</button></td>
+  </tr>`;
+}
+
+function addExtrasRow() {
+  if (!extrasPrices.length) return alert('请先添加额外单价');
+  const key = 'e' + (++extrasRowSeq);
+  document.getElementById('extrasInputBody').insertAdjacentHTML('beforeend', makeExtrasRowHtml(key));
+}
+
+function removeExtrasRow(rowKey) {
+  const tr = document.querySelector(`#extrasInputBody .erow[data-row="${rowKey}"]`);
+  if (tr) tr.remove();
+}
+
+function setExtrasRowPrice(rowKey, p) {
+  document.querySelectorAll(`.price-mini[data-row="${rowKey}"]`).forEach(b => b.classList.toggle('active', parseInt(b.dataset.price)===p));
+  calcExtrasRow(rowKey);
+}
+
+function calcExtrasRow(rowKey) {
+  const raw = document.getElementById(`extrasRaw${rowKey}`).value;
+  const {nums, bagKg} = parseRaw(raw);
+  const priceEl = document.querySelector(`.price-mini.active[data-row="${rowKey}"]`);
+  const price = priceEl ? parseInt(priceEl.dataset.price) : (extrasPrices[0] || 0);
+  const kg = nums.reduce((s,n)=>s+n,0) + bagKg;
+  if (!kg) {
+    document.getElementById(`extrasKg${rowKey}`).textContent = '-';
+    document.getElementById(`extrasTons${rowKey}`).textContent = '-';
+    document.getElementById(`extrasAmt${rowKey}`).textContent = '-';
+    return;
+  }
+  const tons = kg/1000;
+  document.getElementById(`extrasKg${rowKey}`).textContent = kg.toLocaleString();
+  document.getElementById(`extrasTons${rowKey}`).textContent = tons.toFixed(3);
+  document.getElementById(`extrasAmt${rowKey}`).textContent = (tons*price).toFixed(2);
+}
+
+async function submitExtras() {
+  const rows = document.querySelectorAll('#extrasInputBody .erow');
+  const items = [];
+  for (const row of rows) {
+    const rowKey = row.dataset.row;
+    const date = document.getElementById(`extrasDate${rowKey}`).value.trim();
+    const raw = document.getElementById(`extrasRaw${rowKey}`).value.trim();
+    if (!date && !raw) continue;
+    if (!date) return alert('有原始数据未填日期，请补全或删除该行');
+    if (!raw) return alert('有日期未填原始数据，请补全或删除该行');
+    const priceEl = document.querySelector(`.price-mini.active[data-row="${rowKey}"]`);
+    const price = priceEl ? parseInt(priceEl.dataset.price) : (extrasPrices[0] || 0);
+    const dateStr = date.includes('.') ? date : `${currentMonth.split('-')[1]}.${date}`;
+    items.push({date: dateStr, raw, price});
+  }
+  if (!items.length) return alert('请至少填写一行数据');
+  const res = await fetch(API+'/api/extras/records/batch', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({month: currentMonth, records: items})});
+  const r = await res.json().catch(()=>({}));
+  if (!res.ok) return alert(r.error || '提交失败');
+  if (r.skipped > 0) {
+    return alert(`有 ${r.skipped} 行数据无法识别：${(r.skipped_items||[]).map(s=>s.raw).join('、')}，请检查后重新提交`);
+  }
+  extrasRowSeq = 0;
+  document.getElementById('extrasInputBody').innerHTML = makeExtrasRowHtml('e' + (++extrasRowSeq));
+  await loadExtrasPage();
+  toast(`已添加 ${r.added} 条额外记录`);
+}
+
+function editExtrasRecord(id) {
+  const rec = extrasById[id];
+  if (!rec) return;
+  const priceOpts = extrasPrices.map(p => `<option value="${p}" ${p===rec.price?'selected':''}>${p}元/吨</option>`).join('');
+  showModal({
+    title: `编辑额外记录 ${rec.date}`,
+    body: `<div class="form-group"><label>原始数据</label><input type="text" id="editExtrasRaw" value="${esc(rec.raw)}" placeholder="如 400+300" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>
+<div class="form-group" style="margin-top:10px;"><label>单价(元/吨)</label><select id="editExtrasPrice">${priceOpts}</select></div>`,
+    confirmText: '保存',
+    onConfirm: async () => {
+      const raw = document.getElementById('editExtrasRaw').value.trim();
+      const price = parseInt(document.getElementById('editExtrasPrice').value);
+      if (!raw) return alert('请填写原始数据');
+      const res = await fetch(API+'/api/extras/records/'+id, {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify({raw, price})});
+      if (!res.ok) { const err = await res.json().catch(()=>({})); return alert(err.error || '保存失败'); }
+      await loadExtrasPage();
+      toast('已更新');
+    }
+  });
+}
+
+async function deleteExtrasRecord(id) {
+  showModal({
+    title: '确认删除这条额外记录？',
+    body: '<p style="color:var(--muted);">删除后不可恢复，确定要删除吗？</p>',
+    confirmText: '删除',
+    danger: true,
+    onConfirm: async () => {
+      await fetch(API+'/api/extras/records/'+id, {method:'DELETE'});
+      await loadExtrasPage();
+      toast('已删除');
+    }
+  });
 }
 
 // ===== Batch Import =====
@@ -1049,6 +1313,7 @@ document.querySelectorAll('.tab').forEach((el, i) => el.classList.toggle('active
 // Load data, then render report if needed
 async function initApp() {
   await loadPrices();
+  await loadExtrasPrices();
   await loadMonths();
   if (savedTab === 'report') {
     await loadReport();
