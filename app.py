@@ -156,6 +156,55 @@ def add_record():
     return jsonify(record), 201
 
 
+@app.route('/api/records/batch', methods=['POST'])
+def add_records_batch():
+    """批量添加主业记录，一次请求提交整月数据"""
+    data = load_data()
+    req = request.json
+    month = req.get('month')
+    items = req.get('records') or []
+    added = []
+    skipped = []
+    for it in items:
+        date = (it.get('date') or '').strip()
+        raw = (it.get('raw') or '').strip()
+        try:
+            price = int(it.get('price'))
+        except (TypeError, ValueError):
+            price = 0
+        kg = parse_raw_input(raw)
+        if kg <= 0 or not date:
+            skipped.append({'date': date, 'raw': raw})
+            continue
+        added.append({
+            'id': str(uuid.uuid4())[:8],
+            'date': date,
+            'raw': raw,
+            'kg': kg,
+            'price': price
+        })
+    if added:
+        if month not in data['records']:
+            data['records'][month] = []
+        data['records'][month].extend(added)
+        save_data(data)
+    return jsonify({'ok': True, 'added': len(added), 'skipped': len(skipped), 'skipped_items': skipped})
+
+
+@app.route('/api/records/batch', methods=['DELETE'])
+def delete_records_batch():
+    """批量删除主业记录（一次请求）"""
+    data = load_data()
+    ids = set(request.json.get('ids') or [])
+    deleted = 0
+    for month, records in data['records'].items():
+        before = len(records)
+        data['records'][month] = [r for r in records if r['id'] not in ids]
+        deleted += before - len(data['records'][month])
+    save_data(data)
+    return jsonify({'ok': True, 'deleted': deleted})
+
+
 @app.route('/api/records/<record_id>', methods=['DELETE'])
 def delete_record(record_id):
     data = load_data()

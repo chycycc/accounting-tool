@@ -88,6 +88,24 @@ button:focus-visible, select:focus-visible, input:focus-visible {
 }
 a:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
 
+/* 选区高亮（跟随主题色）与输入光标色 */
+::selection { background: var(--accent-dim); color: var(--text); }
+input, textarea { caret-color: var(--accent); }
+
+/* 细滚动条：Firefox（所有可滚动容器） */
+* { scrollbar-width: thin; scrollbar-color: var(--surface3) transparent; }
+/* 细滚动条：WebKit（含弹窗、表格横向滚动） */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background-color: var(--surface3);
+  border-radius: var(--radius-pill);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background-color: var(--muted); background-clip: padding-box; }
+::-webkit-scrollbar-corner { background: transparent; }
+
 /* ---------- 顶部品牌 ---------- */
 .page-header {
   display: flex;
@@ -135,7 +153,7 @@ h1 span.accent { color: var(--accent); }
   font-size: 13px;
   font-weight: 600;
   color: var(--muted);
-  transition: transform var(--transition);
+  transition: transform var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition);
   box-shadow: var(--shadow-sm);
 }
 .theme-toggle:hover {
@@ -143,6 +161,8 @@ h1 span.accent { color: var(--accent); }
   color: var(--accent);
   box-shadow: var(--shadow-md);
 }
+.theme-toggle:active { transform: translateY(1px) scale(0.97); }
+.theme-toggle:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
 .theme-toggle .icon { display: inline-flex; }
 .theme-toggle .icon svg { width: 16px; height: 16px; }
 [data-theme="dark"] .ic-sun { display: none; }
@@ -156,7 +176,7 @@ h1 span.accent { color: var(--accent); }
   padding: 20px 22px;
   margin-bottom: 16px;
   box-shadow: var(--shadow-sm);
-  transition: transform var(--transition); /* 主题色即时切换，防过渡卡死 */
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
 }
 .card:hover { box-shadow: var(--shadow-md); }
 .card h3 {
@@ -200,13 +220,15 @@ h1 span.accent { color: var(--accent); }
   font-weight: 600;
   color: var(--muted);
   border-radius: var(--radius-sm);
-  transition: transform var(--transition);
+  transition: transform var(--transition), color var(--transition), background-color var(--transition);
   user-select: none;
   border: none;
   background: transparent;
 }
 .tab svg { width: 15px; height: 15px; }
 .tab:hover { color: var(--text); }
+.tab:active { transform: translateY(1px); }
+.tab:focus-visible { outline: 2px solid var(--ring); outline-offset: -2px; }
 .tab.active {
   background: var(--accent-dim);
   color: var(--accent);
@@ -231,7 +253,7 @@ input, select {
   background: var(--surface);
   color: var(--text);
   font-family: inherit;
-  transition: transform var(--transition);
+  transition: border-color var(--transition), box-shadow var(--transition), background-color var(--transition);
 }
 input:hover, select:hover { border-color: var(--surface3); }
 input:focus, select:focus {
@@ -239,6 +261,12 @@ input:focus, select:focus {
   box-shadow: 0 0 0 3px var(--accent-dim);
 }
 input::placeholder { color: var(--muted); opacity: 0.55; }
+
+/* 输入校验错误态 */
+.input-error {
+  border-color: var(--danger) !important;
+  box-shadow: 0 0 0 3px var(--danger-dim) !important;
+}
 
 /* 下拉框 */
 select {
@@ -269,12 +297,42 @@ select option { background: var(--surface); color: var(--text); }
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform var(--transition);
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border-color var(--transition), opacity var(--transition);
   white-space: nowrap;
   letter-spacing: 0.01em;
 }
 .btn svg { width: 15px; height: 15px; }
-.btn:active { transform: translateY(1px); }
+
+/* 六状态：focus / disabled / loading */
+.btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.btn:disabled, .btn[disabled], .btn.disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.55;
+  filter: saturate(0.4);
+  box-shadow: none !important;
+  transform: none !important;
+}
+.btn.loading {
+  pointer-events: none;
+  opacity: 0.85;
+}
+.btn.loading::before {
+  content: '';
+  width: 13px;
+  height: 13px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  flex: none;
+  animation: btnSpin 0.7s linear infinite;
+  box-sizing: border-box;
+}
+@keyframes btnSpin { to { transform: rotate(360deg); } }
 
 .btn-primary {
   background: linear-gradient(135deg, var(--accent), var(--accent-hover));
@@ -286,10 +344,16 @@ select option { background: var(--surface); color: var(--text); }
   box-shadow: 0 2px 4px rgba(15,23,42,0.12), 0 5px 14px var(--accent-dim);
   transform: translateY(-1px);
 }
+.btn-primary:focus-visible {
+  outline-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-dim);
+}
 .btn-danger { background: var(--danger); color: #FFFFFF; box-shadow: var(--shadow-sm); }
-.btn-danger:hover { background: var(--danger-hover); box-shadow: var(--shadow-md); }
+.btn-danger:hover { background: var(--danger-hover); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.btn-danger:focus-visible { outline-color: var(--danger); box-shadow: 0 0 0 4px var(--danger-dim); }
 .btn-success { background: var(--success); color: #FFFFFF; box-shadow: var(--shadow-sm); }
-.btn-success:hover { filter: brightness(1.08); box-shadow: var(--shadow-md); }
+.btn-success:hover { filter: brightness(1.08); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.btn-success:focus-visible { outline-color: var(--success); box-shadow: 0 0 0 4px var(--success); }
 .btn-outline {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -299,6 +363,17 @@ select option { background: var(--surface); color: var(--text); }
   border-color: var(--accent);
   color: var(--accent);
   box-shadow: var(--shadow-sm);
+}
+.btn-outline:focus-visible {
+  outline-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-dim);
+}
+
+/* 统一 active 按压反馈（置于所有变体之后，防止 hover 的 transform 覆盖） */
+.btn:active:not(:disabled):not([disabled]):not(.loading) {
+  transform: translateY(1px) scale(0.97);
+  box-shadow: var(--shadow-sm) !important;
+  transition-duration: 0.08s;
 }
 
 /* ---------- 工具栏 ---------- */
@@ -328,7 +403,7 @@ select option { background: var(--surface); color: var(--text); }
   border-radius: var(--radius-lg);
   padding: 14px 16px;
   box-shadow: var(--shadow-sm);
-  transition: transform var(--transition); /* 主题色即时切换 */
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
 }
 .summary-item:hover {
   border-color: var(--accent-dim);
@@ -384,7 +459,7 @@ thead th {
   position: sticky;
   top: 0;
   z-index: 1;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.06em;
   color: var(--muted);
   border-bottom: 1px solid var(--border);
@@ -393,8 +468,8 @@ thead th {
 /* 表头对齐：2-3列左对齐，4-7列数字右对齐 */
 th:nth-child(2), th:nth-child(3) { text-align: left; }
 th:nth-child(4), th:nth-child(5), th:nth-child(6), th:nth-child(7) { text-align: right; padding-right: 16px; }
-td { border-bottom: 1px solid var(--border); }
-tbody tr { transition: transform var(--transition); }
+td { border-bottom: 1px solid var(--border); transition: background-color 0.15s ease; }
+tbody tr { transition: background-color 0.15s ease; }
 td.num {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
@@ -434,6 +509,32 @@ tbody tr:nth-child(even):hover td { background: var(--accent-dim); }
 }
 [data-theme="dark"] .summary-sticky td { box-shadow: 0 -3px 12px rgba(0,0,0,0.35); }
 
+/* ---------- 空状态 ---------- */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 44px 20px;
+  gap: 4px;
+}
+.empty-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent-dim);
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.empty-icon svg { width: 26px; height: 26px; }
+.empty-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.empty-hint { font-size: 12.5px; color: var(--muted); max-width: 280px; width: 100%; text-align: center; line-height: 1.6; margin-bottom: 10px; }
+.empty-action { padding: 7px 18px; font-size: 13px; }
+
 /* ---------- 行内小按钮 ---------- */
 .mini-btn {
   color: var(--accent);
@@ -443,13 +544,19 @@ tbody tr:nth-child(even):hover td { background: var(--accent-dim); }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 6px;
-  padding: 5px 8px;
+  padding: 7px 9px;
   opacity: 0.75;
   transition: all var(--transition);
-  min-width: 28px;
-  min-height: 28px;
+  min-width: 32px;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
+.mini-btn svg, .del-btn svg { width: 14px; height: 14px; display: block; }
 .mini-btn:hover { opacity: 1; border-color: var(--accent); color: var(--accent); box-shadow: var(--shadow-sm); }
+.mini-btn:active { transform: translateY(1px) scale(0.94); }
+.mini-btn:focus-visible, .del-btn:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; }
 .del-btn {
   color: var(--danger);
   cursor: pointer;
@@ -457,14 +564,18 @@ tbody tr:nth-child(even):hover td { background: var(--accent-dim); }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 6px;
-  padding: 4px 9px;
+  padding: 7px 9px;
   opacity: 0.65;
   transition: all var(--transition);
-  min-width: 28px;
-  min-height: 28px;
+  min-width: 32px;
+  min-height: 32px;
   line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .del-btn:hover { opacity: 1; border-color: var(--danger); color: var(--danger); box-shadow: var(--shadow-sm); }
+.del-btn:active { transform: translateY(1px) scale(0.94); }
 
 /* ---------- 单价按钮 ---------- */
 .price-btns { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -482,6 +593,8 @@ tbody tr:nth-child(even):hover td { background: var(--accent-dim); }
   user-select: none;
 }
 .price-btn:hover { border-color: var(--accent); color: var(--accent); }
+.price-btn:active { transform: translateY(1px) scale(0.95); }
+.price-btn:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
 .price-btn.active {
   border-color: var(--accent);
   background: var(--accent);
@@ -508,10 +621,14 @@ tbody tr:nth-child(even):hover td { background: var(--accent-dim); }
   pointer-events: none;
 }
 .toast.show { opacity: 1; transform: translateY(0); }
+.toast.error { background: var(--danger-hover); color: #FFFFFF; }
 
 /* ---------- 弹窗 ---------- */
 .modal-overlay {
-  display: none;
+  display: flex;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
   position: fixed;
   inset: 0;
   background: rgba(9,14,25,0.5);
@@ -521,8 +638,13 @@ tbody tr:nth-child(even):hover td { background: var(--accent-dim); }
   padding: 20px;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+  transition: opacity 0.24s ease, visibility 0.24s ease;
 }
-.modal-overlay.show { display: flex; }
+.modal-overlay.show {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
 .modal {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -530,12 +652,14 @@ tbody tr:nth-child(even):hover td { background: var(--accent-dim); }
   width: 420px;
   max-width: 100%;
   box-shadow: var(--shadow-lg);
-  animation: modalIn 0.22s cubic-bezier(0.21, 1.02, 0.73, 1);
   overflow: hidden;
+  opacity: 0;
+  transform: translateY(16px) scale(0.96);
+  transition: transform 0.26s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.24s ease;
 }
-@keyframes modalIn {
-  from { transform: translateY(-12px) scale(0.98); opacity: 0; }
-  to { transform: translateY(0) scale(1); opacity: 1; }
+.modal-overlay.show .modal {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 .modal-header {
   padding: 16px 20px;
@@ -581,7 +705,7 @@ tbody tr:nth-child(even):hover td { background: var(--accent-dim); }
   background: transparent;
   color: var(--text);
   font-family: inherit;
-  transition: transform var(--transition);
+  transition: border-color var(--transition), background-color var(--transition), box-shadow var(--transition);
 }
 .batch-table input:hover { border-color: var(--border); background: var(--surface2); }
 .batch-table input:focus { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 3px var(--accent-dim); }
@@ -593,9 +717,17 @@ tbody tr:nth-child(even):hover td { background: var(--accent-dim); }
   padding-right: 8px;
   font-weight: 600;
 }
-.batch-table .price-cell { padding: 5px 4px; }
+.batch-table .price-cell {
+  padding: 5px 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+}
 .batch-table .price-mini {
-  padding: 5px 10px;
+  flex: none;
+  padding: 4px 9px;
   border: 1.5px solid var(--border);
   background: var(--surface);
   cursor: pointer;
@@ -604,9 +736,11 @@ tbody tr:nth-child(even):hover td { background: var(--accent-dim); }
   color: var(--text);
   font-family: var(--font-mono);
   border-radius: var(--radius-pill);
-  transition: all var(--transition);
+  transition: transform var(--transition), border-color var(--transition), color var(--transition), background var(--transition);
 }
 .batch-table .price-mini:hover { border-color: var(--accent); color: var(--accent); }
+.batch-table .price-mini:active { transform: translateY(1px) scale(0.93); }
+.batch-table .price-mini:focus-visible, #batchToolPrice .bp-btn:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; }
 .batch-table .price-mini.active {
   border-color: var(--accent);
   background: var(--accent);
@@ -616,7 +750,7 @@ tbody tr:nth-child(even):hover td { background: var(--accent-dim); }
 .batch-row-empty { opacity: 0.3; }
 
 /* 批量弹窗顶部单价工具条 */
-#batchToolPrice { display: flex; gap: 6px; }
+#batchToolPrice { display: flex; gap: 6px; flex-wrap: wrap; }
 #batchToolPrice .bp-btn {
   padding: 6px 14px;
   border: 1.5px solid var(--border);
@@ -632,6 +766,7 @@ tbody tr:nth-child(even):hover td { background: var(--accent-dim); }
   line-height: 1.2;
 }
 #batchToolPrice .bp-btn:hover { border-color: var(--accent); color: var(--accent); }
+#batchToolPrice .bp-btn:active { transform: translateY(1px) scale(0.94); }
 #batchToolPrice .bp-btn.active {
   border-color: var(--accent);
   background: var(--accent);
@@ -799,7 +934,7 @@ tbody tr:nth-child(even):hover td { background: var(--accent-dim); }
   border: 2px solid transparent;
   padding: 0;
   cursor: pointer;
-  transition: transform var(--transition);
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
 }
 .accent-swatch:hover { transform: scale(1.12); }
 .accent-swatch:active { transform: scale(0.96); }
@@ -828,7 +963,7 @@ tbody tr:nth-child(even):hover td { background: var(--accent-dim); }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   cursor: pointer;
-  transition: transform var(--transition);
+  transition: transform var(--transition), border-color var(--transition), background-color var(--transition);
   font-size: 14px;
 }
 .config-item:hover { border-color: var(--accent); background: var(--surface); }
@@ -871,6 +1006,9 @@ tbody tr:nth-child(even):hover td { background: var(--accent-dim); }
   .toolbar { flex-direction: column; align-items: stretch; }
   .toolbar .btn-group { justify-content: flex-start; }
   .btn { min-height: 42px; }
+  /* 行内图标按钮 44px 触控 */
+  .mini-btn, .del-btn { min-width: 44px; min-height: 44px; }
+  .mini-btn svg, .del-btn svg { width: 18px; height: 18px; }
 }
 
 @media (max-width: 600px) {

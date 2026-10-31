@@ -7,25 +7,25 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23166534'/%3E%3Cpath d='M50 32c-6-4-14-6-22-6v44c8 0 16 2 22 6 6-4 14-6 22-6V26c-8 0-16 2-22 6z' fill='none' stroke='%23FFFFFF' stroke-width='6' stroke-linejoin='round'/%3E%3C/svg%3E">
 <script src="/static/chart.umd.min.js"></script>
 <link rel="stylesheet" href="/static/fonts/fonts.css">
-<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/style.css?v=6">
 </head>
 <body>
 <div class="container">
   <div class="page-header">
     <h1>
-      <span class="logo-mark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25</svg></span>
+      <span class="logo-mark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"></path></svg></span>
       记账<span class="accent">账本</span>
     </h1>
     <div class="theme-toggle" onclick="toggleTheme()" role="button" tabindex="0" aria-label="切换深浅主题">
-      <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="ic-moon" aria-hidden="true">M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z</svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="ic-sun" aria-hidden="true">M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z</svg></span>
+      <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="ic-moon" aria-hidden="true"><path d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="ic-sun" aria-hidden="true"><path d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"></path></svg></span>
       <span id="themeLabel">深色</span>
     </div>
   </div>
 
-  <div class="tab-bar">
-    <div class="tab active" onclick="switchTab('records')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10</svg>记录</div>
-    <div class="tab" onclick="switchTab('report')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z</svg>报表</div>
-    <div class="tab" onclick="switchTab('settings')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.28zM15 12a3 3 0 11-6 0 3 3 0 016 0z</svg>设置</div>
+  <div class="tab-bar" role="tablist" aria-label="主要导航">
+    <div class="tab active" role="tab" aria-selected="true" tabindex="0" onclick="switchTab('records')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path></svg>记录</div>
+    <div class="tab" role="tab" aria-selected="false" tabindex="-1" onclick="switchTab('report')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"></path></svg>报表</div>
+    <div class="tab" role="tab" aria-selected="false" tabindex="-1" onclick="switchTab('settings')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.28zM15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>设置</div>
   </div>
 
   <!-- Records Tab -->
@@ -37,16 +37,16 @@
           <button class="btn btn-primary" onclick="createMonth()">+ 新月</button>
         </div>
         <div style="display:flex;gap:8px;">
-          <button class="btn btn-primary" onclick="openExtrasModal()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z</svg>额外</button>
-          <button class="btn btn-primary" onclick="openBatchModal()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z</svg>批量录入</button>
-          <button class="btn btn-danger" id="batchDelBtn" onclick="batchDelete()" style="display:none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0</svg>删除选中</button>
-          <button class="btn btn-primary" onclick="exportExcel()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3</svg>导出 Excel</button>
+          <button class="btn btn-primary" onclick="openExtrasModal()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"></path></svg>额外</button>
+          <button class="btn btn-primary" onclick="openBatchModal()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"></path></svg>批量录入</button>
+          <button class="btn btn-danger" id="batchDelBtn" onclick="batchDelete()" style="display:none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"></path></svg>删除选中</button>
+          <button class="btn btn-outline" onclick="exportExcel()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"></path></svg>导出 Excel</button>
         </div>
       </div>
       <div class="row" style="margin-top:8px;">
         <div class="form-group" style="flex:0.6;">
           <label>号期</label>
-          <input type="text" id="inputDate" inputmode="decimal" aria-label="号期" placeholder="7.1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+          <input type="text" id="inputDate" inputmode="decimal" aria-label="号期" placeholder="7.1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="validateDateInput(this)">
         </div>
         <div class="form-group" style="flex:1.5;">
           <label>原始数据（空格或+分隔，*表示倍数）</label>
@@ -56,34 +56,34 @@
           <label>单价(元/吨)</label>
           <div class="price-btns" id="inputPriceBtns"></div>
         </div>
-        <button class="btn btn-primary" onclick="addRecord()" style="margin-bottom:1px;">添加</button>
+        <button class="btn btn-primary" id="addBtn" onclick="addRecord()" style="margin-bottom:1px;">添加</button>
       </div>
     </div>
 
     <div id="records-summary" class="records-summary" style="display:none;">
       <div class="summary-item">
-        <span class="summary-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5</svg></span>
+        <span class="summary-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"></path></svg></span>
         <div class="summary-text">
           <span class="summary-label">天数</span>
           <span class="summary-value" id="rs-days">0</span>
         </div>
       </div>
       <div class="summary-item">
-        <span class="summary-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M12 3a2.75 2.75 0 012.63 3.63c.3.1.58.26.83.47l4.86 4.86c.42.42.66.99.66 1.59V20.5a1.5 1.5 0 01-1.5 1.5H4.5a1.5 1.5 0 01-1.5-1.5v-6.95c0-.6.24-1.17.66-1.59l4.86-4.86c.25-.21.53-.37.83-.47A2.75 2.75 0 0112 3zM9.5 20.5v-4a1.5 1.5 0 013 0v4M12 8a.75.75 0 100-1.5A.75.75 0 0012 8z</svg></span>
+        <span class="summary-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M12 3a2.75 2.75 0 012.63 3.63c.3.1.58.26.83.47l4.86 4.86c.42.42.66.99.66 1.59V20.5a1.5 1.5 0 01-1.5 1.5H4.5a1.5 1.5 0 01-1.5-1.5v-6.95c0-.6.24-1.17.66-1.59l4.86-4.86c.25-.21.53-.37.83-.47A2.75 2.75 0 0112 3zM9.5 20.5v-4a1.5 1.5 0 013 0v4M12 8a.75.75 0 100-1.5A.75.75 0 0012 8z"></path></svg></span>
         <div class="summary-text">
           <span class="summary-label">总kg</span>
           <span class="summary-value" id="rs-kg">0</span>
         </div>
       </div>
       <div class="summary-item">
-        <span class="summary-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12</svg></span>
+        <span class="summary-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"></path></svg></span>
         <div class="summary-text">
           <span class="summary-label">总吨</span>
           <span class="summary-value" id="rs-tons">0</span>
         </div>
       </div>
       <div class="summary-item">
-        <span class="summary-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z</svg></span>
+        <span class="summary-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"></path></svg></span>
         <div class="summary-text">
           <span class="summary-label">总金额</span>
           <span class="summary-value" id="rs-amount">0</span>
@@ -99,13 +99,18 @@
         <tbody id="recordsBody"></tbody>
         <tfoot id="recordsFoot"></tfoot>
       </table>
-      <div id="emptyMsg" style="text-align:center;padding:30px;color:var(--muted);">暂无数据，请添加记录</div>
+      <div id="emptyMsg" class="empty-state" style="display:none;">
+        <span class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.25 13.5H3c.414 0 .826.028 1.233.083l2.01.275a2.25 2.25 0 011.201.348l.599.374a2.25 2.25 0 001.202.348h2.78a2.25 2.25 0 001.201-.348l.599-.374a2.25 2.25 0 011.201-.348l2.01-.275c.407-.055.819-.083 1.233-.083h.75m0 0V18a2.25 2.25 0 01-2.25 2.25H4.5A2.25 2.25 0 012.25 18v-4.5z"/><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></span>
+        <p class="empty-title">本月暂无记录</p>
+        <p class="empty-hint">在上方填写号期与原始数据，点击「添加」开始记账</p>
+        <button type="button" class="btn btn-outline empty-action" onclick="document.getElementById('inputDate').focus()">去添加记录</button>
+      </div>
     </div>
 
     <!-- 本月额外记录（主记录表格下方） -->
     <div id="extras-section" class="card fade-in" style="display:none;margin-top:12px;">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-        <h3 style="margin:0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z</svg>额外记录</h3>
+        <h3 style="margin:0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"></path></svg>额外记录</h3>
         <span id="extrasPageCount" style="font-size:12px;color:var(--muted);"></span>
       </div>
       <div class="table-wrap">
@@ -126,7 +131,7 @@
           <label>年份：</label>
           <select id="yearSelect" onchange="loadReport()"></select>
         </div>
-        <button class="btn btn-primary" onclick="exportReport()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3</svg>导出年报表</button>
+        <button class="btn btn-outline" onclick="exportReport()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"></path></svg>导出年报表</button>
       </div>
     </div>
 
@@ -171,7 +176,7 @@
 
     <!-- 月度汇总表格 -->
     <div id="report-monthly-table" class="card fade-in" style="display:none;">
-      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M4 6.5h16M4 12h16M4 17.5h10</svg>月度汇总</h3>
+      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M4 6.5h16M4 12h16M4 17.5h10"></path></svg>月度汇总</h3>
       <div class="table-wrap">
         <table>
           <thead><tr><th>月份</th><th>天数</th><th>总kg</th><th>总吨</th><th>主业金额(元)</th><th>额外金额(元)</th><th>当月合计(元)</th></tr></thead>
@@ -183,22 +188,22 @@
 
     <!-- 月度趋势图表 -->
     <div id="report-charts" class="card fade-in" style="display:none;">
-      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941</svg>月度趋势</h3>
+      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"></path></svg>月度趋势</h3>
       <div style="display:flex;gap:12px;flex-wrap:wrap;">
         <div style="flex:1;min-width:280px;">
-          <canvas id="chartTons"></canvas>
+          <canvas id="chartTons" role="img" aria-label="月度金额趋势折线图，具体数值见月度汇总表格"></canvas>
         </div>
         <div style="flex:1;min-width:280px;">
-          <canvas id="chartAmount"></canvas>
+          <canvas id="chartAmount" role="img" aria-label="月度金额对比柱状图，具体数值见月度汇总表格"></canvas>
         </div>
       </div>
     </div>
 
     <!-- 按单价饼图 -->
     <div id="report-price-pie" class="card fade-in" style="display:none;">
-      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6zM13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z</svg>按单价占比</h3>
+      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6zM13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z"></path></svg>按单价占比</h3>
       <div style="max-width:350px;margin:0 auto;position:relative;">
-        <canvas id="chartPricePie"></canvas>
+        <canvas id="chartPricePie" role="img" aria-label="按单价占比饼图，各单价金额占比"></canvas>
         <div id="pieCenter" style="position:absolute;top:42%;left:0;right:0;text-align:center;pointer-events:none;">
           <div style="font-size:11px;color:var(--muted);">总金额</div>
           <div id="pieCenterValue" style="font-size:16px;font-weight:700;color:var(--text);">-</div>
@@ -208,7 +213,7 @@
 
     <!-- TOP 10 单日排行 -->
     <div id="report-top10" class="card fade-in" style="display:none;">
-      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0</svg>TOP 10 单日</h3>
+      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0"></path></svg>TOP 10 单日</h3>
       <div class="table-wrap">
         <table>
           <thead><tr><th>排名</th><th>日期</th><th>原始数据</th><th>吨数</th><th>金额(元)</th></tr></thead>
@@ -219,9 +224,9 @@
 
     <!-- 月度环比 -->
     <div id="report-comparison" class="card fade-in" style="display:none;">
-      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M2.25 6L9 12.75l4.286-4.286a11.948 11.948 0 014.306 6.43l.776 2.898m0 0l3.182-5.511m-3.182 5.51l-5.511-3.181</svg>月度环比</h3>
+      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M2.25 6L9 12.75l4.286-4.286a11.948 11.948 0 014.306 6.43l.776 2.898m0 0l3.182-5.511m-3.182 5.51l-5.511-3.181"></path></svg>月度环比</h3>
       <div style="max-width:500px;">
-        <canvas id="chartComparison"></canvas>
+        <canvas id="chartComparison" role="img" aria-label="月度环比增长率柱状图"></canvas>
       </div>
     </div>
   </div>
@@ -229,13 +234,13 @@
   <!-- Settings Tab -->
   <div id="tab-settings" class="hidden">
     <div class="card">
-      <h3 style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75a.75.75 0 00.75-.75V21a.75.75 0 01.75-.75h1.5a2.25 2.25 0 002.25-2.25v-1.5c0-.414.336-.75.75-.75h.75a2.25 2.25 0 002.25-2.25v-1.5c0-.414.336-.75.75-.75h.75a.75.75 0 00.75-.75 9.75 9.75 0 00-9.75-9.75zM8.25 12a1.125 1.125 0 110-2.25 1.125 1.125 0 010 2.25zm3-3.75a1.125 1.125 0 110-2.25 1.125 1.125 0 010 2.25zM15.75 12a1.125 1.125 0 110-2.25 1.125 1.125 0 010 2.25z</svg>主题色</h3>
+      <h3 style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75a.75.75 0 00.75-.75V21a.75.75 0 01.75-.75h1.5a2.25 2.25 0 002.25-2.25v-1.5c0-.414.336-.75.75-.75h.75a2.25 2.25 0 002.25-2.25v-1.5c0-.414.336-.75.75-.75h.75a.75.75 0 00.75-.75 9.75 9.75 0 00-9.75-9.75zM8.25 12a1.125 1.125 0 110-2.25 1.125 1.125 0 010 2.25zm3-3.75a1.125 1.125 0 110-2.25 1.125 1.125 0 010 2.25zM15.75 12a1.125 1.125 0 110-2.25 1.125 1.125 0 010 2.25z"></path></svg>主题色</h3>
       <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">点击色块即时切换，浅色/深色主题都会自动适配</p>
       <div class="accent-swatches" id="accentSwatches"></div>
     </div>
 
     <div class="card">
-      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.28zM15 12a3 3 0 11-6 0 3 3 0 016 0z</svg>单价管理</h3>
+      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.28zM15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>单价管理</h3>
       <div class="row">
         <div class="form-group" style="flex:0.5;">
           <label>新增单价(元/吨)</label>
@@ -247,7 +252,7 @@
     </div>
 
     <div class="card">
-      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75</svg>报表配置</h3>
+      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"></path></svg>报表配置</h3>
       <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">选择要在报表页显示的模块</p>
       <div class="config-list">
         <label class="config-item">
@@ -277,11 +282,11 @@
       </div>
 
     <div class="card">
-      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 5.625c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125</svg>数据管理</h3>
+      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 5.625c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"></path></svg>数据管理</h3>
       <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">每次保存自动备份到服务器 backups/ 目录（保留最近20份），也可手动导出/导入整库备份</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="btn btn-primary" onclick="exportData()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5</svg>导出备份 JSON</button>
-        <button class="btn btn-outline" onclick="document.getElementById('importFile').click()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3</svg>导入备份</button>
+        <button class="btn btn-primary" onclick="exportData()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"></path></svg>导出备份 JSON</button>
+        <button class="btn btn-outline" onclick="document.getElementById('importFile').click()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"></path></svg>导入备份</button>
         <input type="file" id="importFile" accept=".json,application/json" style="display:none;" onchange="importData(this)">
       </div>
     </div>
@@ -291,7 +296,7 @@
 
 <!-- Modal -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
-  <div class="modal" onclick="event.stopPropagation()">
+  <div class="modal" tabindex="-1" onclick="event.stopPropagation()">
     <div class="modal-header" id="modalTitle">新建月份</div>
     <div class="modal-body" id="modalBody"></div>
     <div class="modal-footer">
@@ -303,8 +308,8 @@
 
 <!-- Batch Modal -->
 <div class="modal-overlay" id="batchOverlay" onclick="closeBatchModal()">
-  <div class="modal modal-wide" onclick="event.stopPropagation()">
-    <div class="modal-header"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z</svg>批量录入 - <span id="batchMonth"></span></div>
+  <div class="modal modal-wide" tabindex="-1" onclick="event.stopPropagation()">
+    <div class="modal-header"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"></path></svg>批量录入 - <span id="batchMonth"></span></div>
     <div class="modal-body" style="max-height:65vh;overflow-y:auto;padding:0;">
       <div style="padding:10px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:0;background:var(--surface);z-index:2;">
         <span style="font-size:12px;color:var(--muted);font-weight:600;">批量单价</span>
@@ -321,7 +326,7 @@
             <th>原始数据</th>
             <th style="width:80px;">合计(kg)</th>
             <th style="width:70px;">吨数</th>
-            <th style="width:140px;">单价</th>
+            <th style="width:185px;">单价</th>
             <th style="width:80px;">金额</th>
             <th style="width:44px;"></th>
           </tr>
@@ -330,19 +335,20 @@
       </table>
     </div>
     <div class="modal-footer">
-      <div style="flex:1;font-size:13px;color:var(--muted);">
-        💡 填写原始数据后自动计算，留空的行会跳过
+      <div style="flex:1;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;flex:none;" aria-hidden="true"><path d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/></svg>
+        填写原始数据后自动计算，留空的行会跳过
       </div>
       <button class="btn btn-outline" onclick="closeBatchModal()">取消</button>
-      <button class="btn btn-primary" onclick="submitBatch()">✅ 确认提交</button>
+      <button class="btn btn-primary" id="batchSubmitBtn" onclick="submitBatch()">确认提交</button>
     </div>
   </div>
 </div>
 
 <!-- Extras Modal（额外账本） -->
 <div class="modal-overlay" id="extrasOverlay" onclick="closeExtrasModal()">
-  <div class="modal modal-wide" onclick="event.stopPropagation()">
-    <div class="modal-header"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z</svg>额外账本 - <span id="extrasMonth"></span></div>
+  <div class="modal modal-wide" tabindex="-1" onclick="event.stopPropagation()">
+    <div class="modal-header"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true"><path d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"></path></svg>额外账本 - <span id="extrasMonth"></span></div>
     <div class="modal-body" style="max-height:65vh;overflow-y:auto;padding:0;">
       <div style="padding:12px;border-bottom:1px solid var(--border);">
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
@@ -356,7 +362,7 @@
       <div style="padding:12px;">
         <div style="font-size:13px;font-weight:700;margin-bottom:4px;">新增额外记录</div>
         <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">日期不固定，按实际天数添加；每行填日期（如 5 或 10.5）+ 原始数据 + 选单价</div>
-        <button class="btn btn-outline" style="padding:5px 12px;font-size:13px;margin-bottom:8px;" onclick="addExtrasRow()">＋ 添加一行</button>
+        <button class="btn btn-outline" style="padding:5px 12px;font-size:13px;margin-bottom:8px;" onclick="addExtrasRow()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:14px;height:14px;"><path d="M12 4.5v15m7.5-7.5h-15"/></svg>添加一行</button>
         <table class="batch-table">
           <thead><tr><th style="width:90px;">日期</th><th>原始数据</th><th style="width:80px;">合计(kg)</th><th style="width:70px;">吨数</th><th style="width:170px;">单价</th><th style="width:80px;">金额</th><th style="width:44px;"></th></tr></thead>
           <tbody id="extrasInputBody"></tbody>
@@ -364,9 +370,12 @@
       </div>
     </div>
     <div class="modal-footer">
-      <div style="flex:1;font-size:13px;color:var(--muted);">💡 留空的行会跳过；额外账本与主业数据完全分开</div>
+      <div style="flex:1;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;flex:none;" aria-hidden="true"><path d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/></svg>
+        留空的行会跳过；额外账本与主业数据完全分开
+      </div>
       <button class="btn btn-outline" onclick="closeExtrasModal()">取消</button>
-      <button class="btn btn-primary" onclick="submitExtras()">✅ 提交额外</button>
+      <button class="btn btn-primary" id="extrasSubmitBtn" onclick="submitExtras()">提交额外</button>
     </div>
   </div>
 </div>
@@ -381,20 +390,61 @@ let selectedPrice = null;
 let recordsById = {};
 
 const ICON_TRASH = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>';
+const ICON_EDIT = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/></svg>';
+const ICON_ADD = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4.5v15m7.5-7.5h-15"/></svg>';
+const ICON_CLOSE = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18L18 6M6 6l12 12"/></svg>';
 
+let toastTimer = null;
 function toast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2000);
+  t.classList.remove('error');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function toastError(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show', 'error');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show', 'error'), 3200);
 }
 
 function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach((el, i) => el.classList.toggle('active', ['records','report','settings'][i] === tab));
+  document.querySelectorAll('.tab').forEach((el, i) => {
+    const t = ['records','report','settings'][i];
+    const active = t === tab;
+    el.classList.toggle('active', active);
+    el.setAttribute('aria-selected', active ? 'true' : 'false');
+    el.tabIndex = active ? 0 : -1;
+  });
   ['records','report','settings'].forEach(t => document.getElementById('tab-'+t).classList.toggle('hidden', t !== tab));
   localStorage.setItem('activeTab', tab);
   if (tab === 'report') loadReport();
 }
+
+// tab 方向键切换
+document.querySelector('.tab-bar').addEventListener('keydown', e => {
+  if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+  const tabs = [...document.querySelectorAll('.tab')];
+  const idx = tabs.indexOf(document.activeElement);
+  if (idx < 0) return;
+  e.preventDefault();
+  const next = (idx + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+  tabs[next].click();
+  tabs[next].focus();
+});
+
+// 单价按钮键盘支持（Enter/Space 触发）
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const el = e.target;
+  if (!el || !(el.classList.contains('price-btn') || el.classList.contains('price-mini') || el.classList.contains('bp-btn'))) return;
+  e.preventDefault();
+  el.click();
+});
 
 async function loadPrices() {
   prices = await (await fetch(API+'/api/prices')).json();
@@ -404,22 +454,26 @@ async function loadPrices() {
 
 function renderPriceBtns() {
   const container = document.getElementById('inputPriceBtns');
+  if (!container) return;
   if (!selectedPrice || !prices.includes(selectedPrice)) selectedPrice = prices[0];
+  container.setAttribute('role', 'radiogroup');
   container.innerHTML = prices.map(p =>
-    `<div class="price-btn ${p===selectedPrice?'active':''}" onclick="selectPrice(${p})">${p}</div>`
+    `<div class="price-btn ${p===selectedPrice?'active':''}" role="radio" tabindex="0" aria-checked="${p===selectedPrice?'true':'false'}" onclick="selectPrice(${p})">${p}</div>`
   ).join('');
 }
 
 function selectPrice(p) {
   selectedPrice = p;
   document.querySelectorAll('.price-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent == p);
+    const active = btn.textContent == p;
+    btn.classList.toggle('active', active);
+    btn.setAttribute('aria-checked', active ? 'true' : 'false');
   });
 }
 
 function renderPriceList() {
   document.getElementById('priceList').innerHTML = prices.map(p =>
-    `<span style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:var(--surface2);border:1px solid var(--border);font-size:14px;font-weight:500;">${p}元/吨 <button class="del-btn" onclick="deletePrice(${p})">×</button></span>`
+    `<span style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:var(--surface2);border:1px solid var(--border);font-size:14px;font-weight:500;">${p}元/吨 <button type="button" class="del-btn" aria-label="删除单价 ${p} 元/吨" title="删除" onclick="deletePrice(${p})">${ICON_TRASH}</button></span>`
   ).join('');
 }
 
@@ -459,26 +513,94 @@ async function loadMonths() {
 }
 
 let modalCallback = null;
+let modalTriggerEl = null;
 
 function showModal({title, body, confirmText='确定', danger=false, onConfirm}) {
+  modalTriggerEl = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  const overlay = document.getElementById('modalOverlay');
   document.getElementById('modalTitle').textContent = title;
   document.getElementById('modalBody').innerHTML = body;
-  document.getElementById('modalOverlay').classList.add('show');
+  overlay.classList.add('show');
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-labelledby', 'modalTitle');
   const btn = document.getElementById('modalConfirm');
   btn.textContent = confirmText;
   btn.className = danger ? 'btn btn-danger' : 'btn btn-primary';
   modalCallback = onConfirm;
+  btn.focus();
 }
 
 function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('show');
+  const overlay = document.getElementById('modalOverlay');
+  overlay.classList.remove('show');
+  overlay.removeAttribute('role');
+  overlay.removeAttribute('aria-modal');
+  overlay.removeAttribute('aria-labelledby');
   modalCallback = null;
+  if (modalTriggerEl && modalTriggerEl.isConnected && modalTriggerEl.focus) modalTriggerEl.focus();
+  modalTriggerEl = null;
 }
 
-function modalConfirmFn() {
-  if (modalCallback) modalCallback();
+async function modalConfirmFn() {
+  const btn = document.getElementById('modalConfirm');
+  if (!modalCallback) { closeModal(); return; }
+  btn.disabled = true;
+  btn.classList.add('loading');
+  try {
+    await modalCallback();
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('loading');
+  }
   closeModal();
 }
+
+// Esc 关闭最上层弹窗
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  const overlays = ['modalOverlay','batchOverlay','extrasOverlay']
+    .map(id => document.getElementById(id))
+    .filter(o => o && o.classList.contains('show'));
+  if (!overlays.length) return;
+  const o = overlays[overlays.length - 1];
+  if (o.id === 'modalOverlay') closeModal();
+  else if (o.id === 'batchOverlay') closeBatchModal();
+  else closeExtrasModal();
+});
+
+// 焦点陷阱：弹窗打开时 Tab / Shift+Tab 在弹窗内可聚焦元素间循环
+const FOCUSABLE_SEL = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function getActiveOverlay() {
+  return ['modalOverlay','batchOverlay','extrasOverlay']
+    .map(id => document.getElementById(id))
+    .filter(o => o && o.classList.contains('show'))
+    .pop();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Tab') return;
+  const overlay = getActiveOverlay();
+  if (!overlay) return;
+  const modal = overlay.querySelector('.modal');
+  if (!modal) return;
+  const items = [...modal.querySelectorAll(FOCUSABLE_SEL)].filter(el => {
+    const cs = getComputedStyle(el);
+    return cs.display !== 'none' && cs.visibility !== 'hidden' && !el.disabled;
+  });
+  if (!items.length) { e.preventDefault(); return; }
+  const first = items[0];
+  const last = items[items.length - 1];
+  const active = document.activeElement;
+  if (e.shiftKey && (active === first || !modal.contains(active))) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && (active === last || !modal.contains(active))) {
+    e.preventDefault();
+    first.focus();
+  }
+});
 
 function createMonth() {
   const now = new Date();
@@ -526,7 +648,9 @@ async function loadRecords() {
   if (!records.length) {
     tbody.innerHTML = '';
     foot.innerHTML = '';
-    empty.style.display = 'block';
+    empty.style.display = 'flex';
+    document.getElementById('records-summary').style.display = 'none';
+    loadExtrasPage();
     return;
   }
   empty.style.display = 'none';
@@ -535,14 +659,14 @@ async function loadRecords() {
     const tons = (r.kg / 1000).toFixed(3);
     const amount = (r.kg / 1000 * r.price).toFixed(2);
     return `<tr>
-      <td><input type="checkbox" class="row-check" data-id="${r.id}" onchange="updateBatchDelBtn()"></td>
-      <td>${r.date}</td>
-      <td style="text-align:left;font-size:13px;">${r.raw}</td>
+      <td><input type="checkbox" class="row-check" data-id="${r.id}" onchange="updateBatchDelBtn()" aria-label="选择 ${esc(r.date)}"></td>
+      <td>${esc(r.date)}</td>
+      <td style="text-align:left;font-size:13px;">${esc(r.raw)}</td>
       <td class="num">${r.kg.toLocaleString()}</td>
       <td class="num">${tons}</td>
       <td class="num">${r.price}</td>
       <td class="num">${parseFloat(amount).toLocaleString('zh-CN', {minimumFractionDigits:2})}</td>
-      <td style="white-space:nowrap;"><button class="mini-btn" title="编辑" onclick="editRecord('${r.id}')">✎</button> <button class="del-btn" onclick="deleteRecord('${r.id}')">×</button></td>
+      <td style="white-space:nowrap;"><button type="button" class="mini-btn" aria-label="编辑记录 ${esc(r.date)}" title="编辑" onclick="editRecord('${r.id}')">${ICON_EDIT}</button> <button type="button" class="del-btn" aria-label="删除记录 ${esc(r.date)}" title="删除" onclick="deleteRecord('${r.id}')">${ICON_TRASH}</button></td>
     </tr>`;
   }).join('');
   document.getElementById('selectAll').checked = false;
@@ -578,6 +702,14 @@ async function loadRecords() {
 
 const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
+// 号期输入即时校验（如 7.1 / 10 / 12.5）
+function validateDateInput(input) {
+  const v = input.value.trim();
+  const ok = v === '' || /^\d{1,2}(\.\d{1,2})?$/.test(v);
+  input.classList.toggle('input-error', !ok);
+  return ok;
+}
+
 function editRecord(id) {
   const rec = recordsById[id];
   if (!rec) return;
@@ -590,11 +722,11 @@ function editRecord(id) {
     onConfirm: async () => {
       const raw = document.getElementById('editRaw').value.trim();
       const price = parseInt(document.getElementById('editPrice').value);
-      if (!raw) return alert('请填写原始数据');
+      if (!raw) return toastError('请填写原始数据');
       const res = await fetch(API+'/api/records/'+id, {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify({raw, price})});
       if (!res.ok) {
         const err = await res.json().catch(()=>({}));
-        return alert(err.error || '保存失败');
+        return toastError(err.error || '保存失败');
       }
       loadRecords();
       toast('已更新');
@@ -619,7 +751,7 @@ async function importData(input) {
       fd.append('file', f);
       const res = await fetch(API+'/api/import_data', {method:'POST', body:fd});
       const r = await res.json().catch(()=>({}));
-      if (!res.ok) return alert(r.error || '导入失败');
+      if (!res.ok) return toastError(r.error || '导入失败');
       toast('导入成功');
       await loadPrices();
       await loadMonths();
@@ -630,18 +762,27 @@ async function importData(input) {
 async function addRecord() {
   const date = document.getElementById('inputDate').value.trim();
   const raw = document.getElementById('inputRaw').value.trim();
-  if (!date || !raw) return alert('请填写号期和原始数据');
-  if (!currentMonth) return alert('请先选择或创建月份');
-  if (!selectedPrice) return alert('请先添加单价档位');
-  const res = await fetch(API+'/api/records', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({month:currentMonth, date, raw, price:selectedPrice})});
-  if (!res.ok) {
-    const err = await res.json().catch(()=>({}));
-    return alert(err.error || '添加失败');
+  if (!date || !raw) return toastError('请填写号期和原始数据');
+  if (!/^\d{1,2}(\.\d{1,2})?$/.test(date)) return toastError('号期格式应为如 7.1 或 10.5');
+  if (!currentMonth) return toastError('请先选择或创建月份');
+  if (!selectedPrice) return toastError('请先添加单价档位');
+  const btn = document.getElementById('addBtn');
+  btn.disabled = true;
+  btn.classList.add('loading');
+  try {
+    const res = await fetch(API+'/api/records', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({month:currentMonth, date, raw, price:selectedPrice})});
+    if (!res.ok) {
+      const err = await res.json().catch(()=>({}));
+      return toastError(err.error || '添加失败');
+    }
+    document.getElementById('inputDate').value = '';
+    document.getElementById('inputRaw').value = '';
+    loadRecords();
+    toast('添加成功');
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('loading');
   }
-  document.getElementById('inputDate').value = '';
-  document.getElementById('inputRaw').value = '';
-  loadRecords();
-  toast('添加成功');
 }
 
 async function deleteRecord(id) {
@@ -681,9 +822,7 @@ function batchDelete() {
     confirmText: '删除',
     danger: true,
     onConfirm: async () => {
-      for (const id of ids) {
-        await fetch(API+'/api/records/'+id, {method:'DELETE'});
-      }
+      await fetch(API+'/api/records/batch', {method:'DELETE', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ids})});
       loadRecords();
       toast(`已删除 ${ids.length} 条记录`);
     }
@@ -697,6 +836,12 @@ function themeIsDark() {
 
 // 数字计数动画
 function animateNumber(element, target, duration = 800, prefix = '', suffix = '') {
+  const renderFinal = () => element.textContent = prefix + (target >= 100 ? Math.round(target).toLocaleString() : target.toFixed(1)) + suffix;
+  // 尊重系统减少动效偏好：直接显示最终值
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    renderFinal();
+    return;
+  }
   const startTime = performance.now();
   const startValue = 0;
 
@@ -839,8 +984,8 @@ async function loadReport() {
     const top10Body = document.getElementById('top10Body');
     top10Body.innerHTML = top10.map((r, i) => `<tr>
       <td style="font-weight:700;color:var(--accent);">${i+1}</td>
-      <td>${r.date}</td>
-      <td style="text-align:left;font-size:13px;">${r.raw}</td>
+      <td>${esc(r.date)}</td>
+      <td style="text-align:left;font-size:13px;">${esc(r.raw)}</td>
       <td class="num">${(r.kg/1000).toFixed(3)}</td>
       <td class="num">${fmt(r.kg/1000*r.price)}</td>
     </tr>`).join('');
@@ -862,7 +1007,7 @@ async function loadReport() {
 }
 
 function exportExcel() {
-  if (!currentMonth) return alert('请先选择月份');
+  if (!currentMonth) return toastError('请先选择月份');
   window.location.href = API+`/api/export?month=${currentMonth}`;
 }
 
@@ -886,18 +1031,22 @@ async function loadExtrasPrices() {
 function renderExtrasPriceBtns() {
   const box = document.getElementById('extrasPriceBtns');
   if (!box) return;
+  box.setAttribute('role', 'radiogroup');
   box.innerHTML = extrasPrices.length
-    ? extrasPrices.map(p => `<span class="price-btn ${p===extrasSelectedPrice?'active':''}" onclick="selectExtrasPrice(${p})">${p}</span>`).join('')
+    ? extrasPrices.map(p => `<span class="price-btn ${p===extrasSelectedPrice?'active':''}" role="radio" tabindex="0" aria-checked="${p===extrasSelectedPrice?'true':'false'}" onclick="selectExtrasPrice(${p})">${p}</span>`).join('')
     : '<span style="font-size:12px;color:var(--muted);">暂无额外单价，请先添加</span>';
 }
 
-function selectExtrasPrice(p) { extrasSelectedPrice = p; renderExtrasPriceBtns(); }
+function selectExtrasPrice(p) {
+  extrasSelectedPrice = p;
+  renderExtrasPriceBtns();
+}
 
 async function addExtrasPrice() {
   const v = parseInt(document.getElementById('extrasNewPrice').value);
-  if (!v) return alert('请输入额外单价');
+  if (!v) return toastError('请输入额外单价');
   const res = await fetch(API+'/api/extras/prices', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({price:v})});
-  if (!res.ok) { const err = await res.json().catch(()=>({})); return alert(err.error || '添加失败'); }
+  if (!res.ok) { const err = await res.json().catch(()=>({})); return toastError(err.error || '添加失败'); }
   document.getElementById('extrasNewPrice').value = '';
   extrasSelectedPrice = v;
   await loadExtrasPrices();
@@ -934,13 +1083,13 @@ async function loadExtrasPage() {
   sec.style.display = '';
   document.getElementById('extrasPageCount').textContent = `（${records.length} 条）`;
   tbody.innerHTML = records.map(r => `<tr>
-    <td>${r.date}</td>
+    <td>${esc(r.date)}</td>
     <td style="text-align:left;font-size:13px;">${esc(r.raw)}</td>
     <td class="num">${r.kg.toLocaleString()}</td>
     <td class="num">${(r.kg/1000).toFixed(3)}</td>
     <td class="num">${r.price}</td>
     <td class="num">${parseFloat(r.kg/1000*r.price).toLocaleString('zh-CN',{minimumFractionDigits:2})}</td>
-    <td style="white-space:nowrap;"><button class="mini-btn" title="编辑" onclick="editExtrasRecord('${r.id}')">✎</button> <button class="del-btn" onclick="deleteExtrasRecord('${r.id}')">×</button></td>
+    <td style="white-space:nowrap;"><button type="button" class="mini-btn" aria-label="编辑额外记录 ${esc(r.date)}" title="编辑" onclick="editExtrasRecord('${r.id}')">${ICON_EDIT}</button> <button type="button" class="del-btn" aria-label="删除额外记录 ${esc(r.date)}" title="删除" onclick="deleteExtrasRecord('${r.id}')">${ICON_TRASH}</button></td>
   </tr>`).join('');
   const tKg = records.reduce((s,r)=>s+r.kg,0);
   const tAmt = records.reduce((s,r)=>s+r.kg/1000*r.price,0);
@@ -955,22 +1104,36 @@ async function loadExtrasPage() {
   </tr>`;
 }
 
+let extrasTriggerEl = null;
+
 function openExtrasModal() {
-  if (!currentMonth) return alert('请先选择月份');
+  if (!currentMonth) return toastError('请先选择月份');
+  extrasTriggerEl = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   document.getElementById('extrasMonth').textContent = currentMonth;
-  document.getElementById('extrasOverlay').classList.add('show');
+  const overlay = document.getElementById('extrasOverlay');
+  overlay.classList.add('show');
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-labelledby', 'extrasMonth');
   loadExtrasPrices();
   extrasRowSeq = 0;
   document.getElementById('extrasInputBody').innerHTML = makeExtrasRowHtml('e' + (++extrasRowSeq));
+  overlay.querySelector('.modal').focus();
 }
 
 function closeExtrasModal() {
-  document.getElementById('extrasOverlay').classList.remove('show');
+  const overlay = document.getElementById('extrasOverlay');
+  overlay.classList.remove('show');
+  overlay.removeAttribute('role');
+  overlay.removeAttribute('aria-modal');
+  overlay.removeAttribute('aria-labelledby');
+  if (extrasTriggerEl && extrasTriggerEl.isConnected && extrasTriggerEl.focus) extrasTriggerEl.focus();
+  extrasTriggerEl = null;
 }
 
 function makeExtrasRowHtml(rowKey) {
   const priceBtns = extrasPrices.length
-    ? extrasPrices.map(p => `<span class="price-mini ${p===extrasSelectedPrice?'active':''}" data-row="${rowKey}" data-price="${p}" onclick="setExtrasRowPrice('${rowKey}',${p})">${p}</span>`).join(' ')
+    ? extrasPrices.map(p => `<span class="price-mini ${p===extrasSelectedPrice?'active':''}" role="radio" tabindex="0" aria-checked="${p===extrasSelectedPrice?'true':'false'}" data-row="${rowKey}" data-price="${p}" onclick="setExtrasRowPrice('${rowKey}',${p})">${p}</span>`).join(' ')
     : '<span style="font-size:11px;color:var(--muted);">先添加单价</span>';
   return `<tr class="erow" data-row="${rowKey}">
     <td><input type="text" id="extrasDate${rowKey}" inputmode="decimal" aria-label="号期" placeholder="如 5 或 10.5" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></td>
@@ -979,12 +1142,12 @@ function makeExtrasRowHtml(rowKey) {
     <td class="calculated" id="extrasTons${rowKey}">-</td>
     <td class="price-cell">${priceBtns}</td>
     <td class="calculated" id="extrasAmt${rowKey}">-</td>
-    <td style="text-align:center;"><button class="mini-btn" title="删除此行" onclick="removeExtrasRow('${rowKey}')">×</button></td>
+    <td style="text-align:center;"><button type="button" class="mini-btn" aria-label="删除此行" title="删除此行" onclick="removeExtrasRow('${rowKey}')">${ICON_CLOSE}</button></td>
   </tr>`;
 }
 
 function addExtrasRow() {
-  if (!extrasPrices.length) return alert('请先添加额外单价');
+  if (!extrasPrices.length) return toastError('请先添加额外单价');
   const key = 'e' + (++extrasRowSeq);
   document.getElementById('extrasInputBody').insertAdjacentHTML('beforeend', makeExtrasRowHtml(key));
 }
@@ -995,7 +1158,11 @@ function removeExtrasRow(rowKey) {
 }
 
 function setExtrasRowPrice(rowKey, p) {
-  document.querySelectorAll(`.price-mini[data-row="${rowKey}"]`).forEach(b => b.classList.toggle('active', parseInt(b.dataset.price)===p));
+  document.querySelectorAll(`.price-mini[data-row="${rowKey}"]`).forEach(b => {
+    const active = parseInt(b.dataset.price)===p;
+    b.classList.toggle('active', active);
+    b.setAttribute('aria-checked', active ? 'true' : 'false');
+  });
   calcExtrasRow(rowKey);
 }
 
@@ -1025,24 +1192,33 @@ async function submitExtras() {
     const date = document.getElementById(`extrasDate${rowKey}`).value.trim();
     const raw = document.getElementById(`extrasRaw${rowKey}`).value.trim();
     if (!date && !raw) continue;
-    if (!date) return alert('有原始数据未填日期，请补全或删除该行');
-    if (!raw) return alert('有日期未填原始数据，请补全或删除该行');
+    if (!date) return toastError('有原始数据未填日期，请补全或删除该行');
+    if (!raw) return toastError('有日期未填原始数据，请补全或删除该行');
+    if (!/^\d{1,2}(\.\d{1,2})?$/.test(date)) return toastError(`日期「${date}」格式应为如 5 或 10.5`);
     const priceEl = document.querySelector(`.price-mini.active[data-row="${rowKey}"]`);
     const price = priceEl ? parseInt(priceEl.dataset.price) : (extrasPrices[0] || 0);
     const dateStr = date.includes('.') ? date : `${currentMonth.split('-')[1]}.${date}`;
     items.push({date: dateStr, raw, price});
   }
-  if (!items.length) return alert('请至少填写一行数据');
-  const res = await fetch(API+'/api/extras/records/batch', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({month: currentMonth, records: items})});
-  const r = await res.json().catch(()=>({}));
-  if (!res.ok) return alert(r.error || '提交失败');
-  if (r.skipped > 0) {
-    return alert(`有 ${r.skipped} 行数据无法识别：${(r.skipped_items||[]).map(s=>s.raw).join('、')}，请检查后重新提交`);
+  if (!items.length) return toastError('请至少填写一行数据');
+  const btn = document.getElementById('extrasSubmitBtn');
+  btn.disabled = true;
+  btn.classList.add('loading');
+  try {
+    const res = await fetch(API+'/api/extras/records/batch', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({month: currentMonth, records: items})});
+    const r = await res.json().catch(()=>({}));
+    if (!res.ok) return toastError(r.error || '提交失败');
+    if (r.skipped > 0) {
+      return toastError(`有 ${r.skipped} 行数据无法识别：${(r.skipped_items||[]).map(s=>s.raw).join('、')}，请检查后重新提交`);
+    }
+    extrasRowSeq = 0;
+    document.getElementById('extrasInputBody').innerHTML = makeExtrasRowHtml('e' + (++extrasRowSeq));
+    await loadExtrasPage();
+    toast(`已添加 ${r.added} 条额外记录`);
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('loading');
   }
-  extrasRowSeq = 0;
-  document.getElementById('extrasInputBody').innerHTML = makeExtrasRowHtml('e' + (++extrasRowSeq));
-  await loadExtrasPage();
-  toast(`已添加 ${r.added} 条额外记录`);
 }
 
 function editExtrasRecord(id) {
@@ -1057,9 +1233,9 @@ function editExtrasRecord(id) {
     onConfirm: async () => {
       const raw = document.getElementById('editExtrasRaw').value.trim();
       const price = parseInt(document.getElementById('editExtrasPrice').value);
-      if (!raw) return alert('请填写原始数据');
+      if (!raw) return toastError('请填写原始数据');
       const res = await fetch(API+'/api/extras/records/'+id, {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify({raw, price})});
-      if (!res.ok) { const err = await res.json().catch(()=>({})); return alert(err.error || '保存失败'); }
+      if (!res.ok) { const err = await res.json().catch(()=>({})); return toastError(err.error || '保存失败'); }
       await loadExtrasPage();
       toast('已更新');
     }
@@ -1115,8 +1291,9 @@ let batchToolPrice = null;
 function renderBatchToolPrice() {
   const box = document.getElementById('batchToolPrice');
   if (!box) return;
+  box.setAttribute('role', 'radiogroup');
   box.innerHTML = prices.map((p,i) =>
-    `<span class="bp-btn ${i===0?'active':''}" data-bp="${p}" onclick="setBatchToolPrice(${p})">${p}</span>`
+    `<span class="bp-btn ${i===0?'active':''}" role="radio" tabindex="0" aria-checked="${i===0?'true':'false'}" data-bp="${p}" onclick="setBatchToolPrice(${p})">${p}</span>`
   ).join('');
   batchToolPrice = prices[0];
   updateBpCurrent();
@@ -1129,22 +1306,30 @@ function updateBpCurrent() {
 
 function setBatchToolPrice(p) {
   batchToolPrice = p;
-  document.querySelectorAll('#batchToolPrice .bp-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.bp)===p));
+  document.querySelectorAll('#batchToolPrice .bp-btn').forEach(b => {
+    const active = parseInt(b.dataset.bp)===p;
+    b.classList.toggle('active', active);
+    b.setAttribute('aria-checked', active ? 'true' : 'false');
+  });
   updateBpCurrent();
 }
 
 function setRowPrice(k, p) {
-  document.querySelectorAll(`.price-mini[data-row="${k}"]`).forEach(b => b.classList.toggle('active', parseInt(b.dataset.price)===p));
+  document.querySelectorAll(`.price-mini[data-row="${k}"]`).forEach(b => {
+    const active = parseInt(b.dataset.price)===p;
+    b.classList.toggle('active', active);
+    b.setAttribute('aria-checked', active ? 'true' : 'false');
+  });
   calcBatchRow(k);
 }
 
 function applyPriceToAll() {
-  if (!batchToolPrice) return alert('请先选择单价');
+  if (!batchToolPrice) return toastError('请先选择单价');
   document.querySelectorAll('#batchBody .brow').forEach(row => setRowPrice(row.dataset.row, batchToolPrice));
 }
 
 function applyPriceToEmpty() {
-  if (!batchToolPrice) return alert('请先选择单价');
+  if (!batchToolPrice) return toastError('请先选择单价');
   document.querySelectorAll('#batchBody .brow').forEach(row => {
     const k = row.dataset.row;
     if (!document.getElementById('batchRaw'+k).value.trim()) setRowPrice(k, batchToolPrice);
@@ -1157,11 +1342,11 @@ function makeBatchRowHtml(day, rowKey, isFirst, defaultPrice) {
   const dateStr = `${month}.${day}`;
   const priceBtns = prices.map((p,i) => {
     const active = isFirst ? i===0 : p===defaultPrice;
-    return `<span class="price-mini ${active?'active':''}" data-row="${rowKey}" data-day="${day}" data-price="${p}" onclick="batchSelectPrice('${rowKey}',${p})">${p}</span>`;
+    return `<span class="price-mini ${active?'active':''}" role="radio" tabindex="0" aria-checked="${active?'true':'false'}" data-row="${rowKey}" data-day="${day}" data-price="${p}" onclick="batchSelectPrice('${rowKey}',${p})">${p}</span>`;
   }).join(' ');
   const opBtn = isFirst
-    ? `<button class="mini-btn" title="追加一行（同号期多档）" onclick="addBatchRow(${day})">＋</button>`
-    : `<button class="mini-btn" title="删除此行" onclick="removeBatchRow('${rowKey}')">×</button>`;
+    ? `<button type="button" class="mini-btn" aria-label="追加一行（同号期多档）" title="追加一行（同号期多档）" onclick="addBatchRow(${day})">${ICON_ADD}</button>`
+    : `<button type="button" class="mini-btn" aria-label="删除此行" title="删除此行" onclick="removeBatchRow('${rowKey}')">${ICON_CLOSE}</button>`;
   return `<tr class="brow" data-day="${day}" data-row="${rowKey}">
     <td style="font-weight:600;text-align:center;">${dateStr}</td>
     <td><input type="text" id="batchRaw${rowKey}" aria-label="原始数据" placeholder="如 750×5 或 183b" oninput="calcBatchRow('${rowKey}')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></td>
@@ -1173,9 +1358,12 @@ function makeBatchRowHtml(day, rowKey, isFirst, defaultPrice) {
   </tr>`;
 }
 
+let batchTriggerEl = null;
+
 function openBatchModal() {
-  if (!currentMonth) return alert('请先选择月份');
-  if (!prices.length) return alert('请先添加单价档位');
+  if (!currentMonth) return toastError('请先选择月份');
+  if (!prices.length) return toastError('请先添加单价档位');
+  batchTriggerEl = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   document.getElementById('batchMonth').textContent = currentMonth;
   const tbody = document.getElementById('batchBody');
   const [year, month] = currentMonth.split('-').map(Number);
@@ -1187,7 +1375,12 @@ function openBatchModal() {
     html += makeBatchRowHtml(d, 'b' + (++batchRowSeq), true);
   }
   tbody.innerHTML = html;
-  document.getElementById('batchOverlay').classList.add('show');
+  const overlay = document.getElementById('batchOverlay');
+  overlay.classList.add('show');
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-labelledby', 'batchMonth');
+  overlay.querySelector('.modal').focus();
 }
 
 function addBatchRow(day) {
@@ -1207,12 +1400,20 @@ function removeBatchRow(rowKey) {
 }
 
 function closeBatchModal() {
-  document.getElementById('batchOverlay').classList.remove('show');
+  const overlay = document.getElementById('batchOverlay');
+  overlay.classList.remove('show');
+  overlay.removeAttribute('role');
+  overlay.removeAttribute('aria-modal');
+  overlay.removeAttribute('aria-labelledby');
+  if (batchTriggerEl && batchTriggerEl.isConnected && batchTriggerEl.focus) batchTriggerEl.focus();
+  batchTriggerEl = null;
 }
 
 function batchSelectPrice(rowKey, price) {
   document.querySelectorAll(`.price-mini[data-row="${rowKey}"]`).forEach(btn => {
-    btn.classList.toggle('active', parseInt(btn.dataset.price) === price);
+    const active = parseInt(btn.dataset.price) === price;
+    btn.classList.toggle('active', active);
+    btn.setAttribute('aria-checked', active ? 'true' : 'false');
   });
   calcBatchRow(rowKey);
 }
@@ -1240,7 +1441,7 @@ function calcBatchRow(rowKey) {
 async function submitBatch() {
   const [year, month] = currentMonth.split('-').map(Number);
   const rows = document.querySelectorAll('#batchBody .brow');
-  let count = 0;
+  const items = [];
   for (const row of rows) {
     const rowKey = row.dataset.row;
     const day = row.dataset.day;
@@ -1249,21 +1450,33 @@ async function submitBatch() {
     const priceEl = document.querySelector(`.price-mini.active[data-row="${rowKey}"]`);
     const price = priceEl ? parseInt(priceEl.dataset.price) : prices[0];
     const dateStr = `${month}.${day}`;
-    const res = await fetch(API+'/api/records', {
+    items.push({date: dateStr, raw, price});
+  }
+  if (!items.length) { closeBatchModal(); return toastError('请至少填写一行原始数据'); }
+  const btn = document.getElementById('batchSubmitBtn');
+  btn.disabled = true;
+  btn.classList.add('loading');
+  try {
+    const res = await fetch(API+'/api/records/batch', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({month:currentMonth, date:dateStr, raw, price})
+      body:JSON.stringify({month: currentMonth, records: items})
     });
+    const r = await res.json().catch(()=>({}));
     if (!res.ok) {
-      const err = await res.json().catch(()=>({}));
-      closeBatchModal();
-      return alert(`第 ${day} 号数据有误：${err.error || '保存失败'}`);
+      return toastError(r.error || '批量保存失败');
     }
-    count++;
+    if (r.skipped > 0) {
+      toastError(`有 ${r.skipped} 行数据无法识别：${(r.skipped_items||[]).map(s=>s.raw).join('、')}`);
+      return;
+    }
+    closeBatchModal();
+    loadRecords();
+    toast(`已批量添加 ${r.added} 条记录`);
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('loading');
   }
-  closeBatchModal();
-  loadRecords();
-  toast(`已批量添加 ${count} 条记录`);
 }
 
 document.getElementById('inputRaw').addEventListener('keydown', e => {
@@ -1406,7 +1619,13 @@ applyReportConfig();
 
 // Restore saved tab (visual only, don't trigger loadReport yet)
 const savedTab = localStorage.getItem('activeTab') || 'records';
-document.querySelectorAll('.tab').forEach((el, i) => el.classList.toggle('active', ['records','report','settings'][i] === savedTab));
+document.querySelectorAll('.tab').forEach((el, i) => {
+  const t = ['records','report','settings'][i];
+  const active = t === savedTab;
+  el.classList.toggle('active', active);
+  el.setAttribute('aria-selected', active ? 'true' : 'false');
+  el.tabIndex = active ? 0 : -1;
+});
 ['records','report','settings'].forEach(t => document.getElementById('tab-'+t).classList.toggle('hidden', t !== savedTab));
 
 // Load data, then render report if needed
