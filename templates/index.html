@@ -4,44 +4,49 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>记账账本</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📒</text></svg>">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23166534'/%3E%3Cpath d='M50 32c-6-4-14-6-22-6v44c8 0 16 2 22 6 6-4 14-6 22-6V26c-8 0-16 2-22 6z' fill='none' stroke='%23FFFFFF' stroke-width='6' stroke-linejoin='round'/%3E%3C/svg%3E">
 <script src="/static/chart.umd.min.js"></script>
 <link rel="stylesheet" href="/static/fonts/fonts.css">
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-<div class="theme-toggle" onclick="toggleTheme()">
-  <span class="icon" id="themeIcon">🌙</span>
-  <span id="themeLabel">深色</span>
-</div>
 <div class="container">
-  <h1>📒 记账<span>账本</span></h1>
+  <div class="page-header">
+    <h1>
+      <span class="logo-mark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25</svg></span>
+      记账<span class="accent">账本</span>
+    </h1>
+    <div class="theme-toggle" onclick="toggleTheme()" role="button" tabindex="0" aria-label="切换深浅主题">
+      <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="ic-moon" aria-hidden="true">M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z</svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="ic-sun" aria-hidden="true">M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z</svg></span>
+      <span id="themeLabel">深色</span>
+    </div>
+  </div>
 
   <div class="tab-bar">
-    <div class="tab active" onclick="switchTab('records')">📝 记录</div>
-    <div class="tab" onclick="switchTab('report')">📈 报表</div>
-    <div class="tab" onclick="switchTab('settings')">⚙️ 设置</div>
+    <div class="tab active" onclick="switchTab('records')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10</svg>记录</div>
+    <div class="tab" onclick="switchTab('report')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z</svg>报表</div>
+    <div class="tab" onclick="switchTab('settings')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.28zM15 12a3 3 0 11-6 0 3 3 0 016 0z</svg>设置</div>
   </div>
 
   <!-- Records Tab -->
   <div id="tab-records">
-    <div class="card">
+    <div class="card card-entry fade-in">
       <div class="toolbar">
         <div style="display:flex;gap:8px;align-items:center;">
           <select id="monthSelect" onchange="loadRecords()"></select>
           <button class="btn btn-primary" onclick="createMonth()">+ 新月</button>
         </div>
         <div style="display:flex;gap:8px;">
-          <button class="btn btn-primary" onclick="openExtrasModal()">💰 额外</button>
-          <button class="btn btn-primary" onclick="openBatchModal()">📋 批量录入</button>
-          <button class="btn btn-danger" id="batchDelBtn" onclick="batchDelete()" style="display:none;">🗑️ 删除选中</button>
-          <button class="btn btn-primary" onclick="exportExcel()">📥 导出 Excel</button>
+          <button class="btn btn-primary" onclick="openExtrasModal()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z</svg>额外</button>
+          <button class="btn btn-primary" onclick="openBatchModal()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z</svg>批量录入</button>
+          <button class="btn btn-danger" id="batchDelBtn" onclick="batchDelete()" style="display:none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0</svg>删除选中</button>
+          <button class="btn btn-primary" onclick="exportExcel()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3</svg>导出 Excel</button>
         </div>
       </div>
       <div class="row" style="margin-top:8px;">
         <div class="form-group" style="flex:0.6;">
           <label>号期</label>
-          <input type="text" id="inputDate" placeholder="7.1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+          <input type="text" id="inputDate" inputmode="decimal" aria-label="号期" placeholder="7.1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
         </div>
         <div class="form-group" style="flex:1.5;">
           <label>原始数据（空格或+分隔，*表示倍数）</label>
@@ -57,24 +62,36 @@
 
     <div id="records-summary" class="records-summary" style="display:none;">
       <div class="summary-item">
-        <span class="summary-label">天数</span>
-        <span class="summary-value" id="rs-days">0</span>
+        <span class="summary-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5</svg></span>
+        <div class="summary-text">
+          <span class="summary-label">天数</span>
+          <span class="summary-value" id="rs-days">0</span>
+        </div>
       </div>
       <div class="summary-item">
-        <span class="summary-label">总kg</span>
-        <span class="summary-value" id="rs-kg">0</span>
+        <span class="summary-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M12 3a2.75 2.75 0 012.63 3.63c.3.1.58.26.83.47l4.86 4.86c.42.42.66.99.66 1.59V20.5a1.5 1.5 0 01-1.5 1.5H4.5a1.5 1.5 0 01-1.5-1.5v-6.95c0-.6.24-1.17.66-1.59l4.86-4.86c.25-.21.53-.37.83-.47A2.75 2.75 0 0112 3zM9.5 20.5v-4a1.5 1.5 0 013 0v4M12 8a.75.75 0 100-1.5A.75.75 0 0012 8z</svg></span>
+        <div class="summary-text">
+          <span class="summary-label">总kg</span>
+          <span class="summary-value" id="rs-kg">0</span>
+        </div>
       </div>
       <div class="summary-item">
-        <span class="summary-label">总吨</span>
-        <span class="summary-value" id="rs-tons">0</span>
+        <span class="summary-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12</svg></span>
+        <div class="summary-text">
+          <span class="summary-label">总吨</span>
+          <span class="summary-value" id="rs-tons">0</span>
+        </div>
       </div>
       <div class="summary-item">
-        <span class="summary-label">总金额</span>
-        <span class="summary-value" id="rs-amount">0</span>
+        <span class="summary-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z</svg></span>
+        <div class="summary-text">
+          <span class="summary-label">总金额</span>
+          <span class="summary-value" id="rs-amount">0</span>
+        </div>
       </div>
     </div>
 
-    <div class="card table-wrap">
+    <div class="card table-wrap fade-in">
       <table>
         <thead>
           <tr><th style="width:30px;"><input type="checkbox" id="selectAll" onchange="toggleSelectAll()"></th><th>号期</th><th>原始数据</th><th>合计(kg)</th><th>吨数</th><th>单价</th><th>金额(元)</th><th></th></tr>
@@ -86,9 +103,9 @@
     </div>
 
     <!-- 本月额外记录（主记录表格下方） -->
-    <div id="extras-section" class="card" style="display:none;margin-top:12px;">
+    <div id="extras-section" class="card fade-in" style="display:none;margin-top:12px;">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-        <h3 style="margin:0;">💰 额外记录</h3>
+        <h3 style="margin:0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z</svg>额外记录</h3>
         <span id="extrasPageCount" style="font-size:12px;color:var(--muted);"></span>
       </div>
       <div class="table-wrap">
@@ -109,12 +126,12 @@
           <label>年份：</label>
           <select id="yearSelect" onchange="loadReport()"></select>
         </div>
-        <button class="btn btn-primary" onclick="exportReport()">📥 导出年报表</button>
+        <button class="btn btn-primary" onclick="exportReport()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3</svg>导出年报表</button>
       </div>
     </div>
 
     <!-- 年度概览 -->
-    <div id="report-overview" style="display:none;">
+    <div id="report-overview" style="display:none;" class="fade-in">
       <div class="overview-container">
         <div class="overview-left">
           <div class="overview-amount-wrap">
@@ -153,8 +170,8 @@
     </div>
 
     <!-- 月度汇总表格 -->
-    <div id="report-monthly-table" class="card" style="display:none;">
-      <h3 style="margin-bottom:10px;">📊 月度汇总</h3>
+    <div id="report-monthly-table" class="card fade-in" style="display:none;">
+      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M4 6.5h16M4 12h16M4 17.5h10</svg>月度汇总</h3>
       <div class="table-wrap">
         <table>
           <thead><tr><th>月份</th><th>天数</th><th>总kg</th><th>总吨</th><th>主业金额(元)</th><th>额外金额(元)</th><th>当月合计(元)</th></tr></thead>
@@ -165,8 +182,8 @@
     </div>
 
     <!-- 月度趋势图表 -->
-    <div id="report-charts" class="card" style="display:none;">
-      <h3 style="margin-bottom:10px;">📈 月度趋势</h3>
+    <div id="report-charts" class="card fade-in" style="display:none;">
+      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941</svg>月度趋势</h3>
       <div style="display:flex;gap:12px;flex-wrap:wrap;">
         <div style="flex:1;min-width:280px;">
           <canvas id="chartTons"></canvas>
@@ -178,8 +195,8 @@
     </div>
 
     <!-- 按单价饼图 -->
-    <div id="report-price-pie" class="card" style="display:none;">
-      <h3 style="margin-bottom:10px;">🥧 按单价占比</h3>
+    <div id="report-price-pie" class="card fade-in" style="display:none;">
+      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6zM13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z</svg>按单价占比</h3>
       <div style="max-width:350px;margin:0 auto;position:relative;">
         <canvas id="chartPricePie"></canvas>
         <div id="pieCenter" style="position:absolute;top:42%;left:0;right:0;text-align:center;pointer-events:none;">
@@ -190,8 +207,8 @@
     </div>
 
     <!-- TOP 10 单日排行 -->
-    <div id="report-top10" class="card" style="display:none;">
-      <h3 style="margin-bottom:10px;">🏆 TOP 10 单日</h3>
+    <div id="report-top10" class="card fade-in" style="display:none;">
+      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0</svg>TOP 10 单日</h3>
       <div class="table-wrap">
         <table>
           <thead><tr><th>排名</th><th>日期</th><th>原始数据</th><th>吨数</th><th>金额(元)</th></tr></thead>
@@ -201,8 +218,8 @@
     </div>
 
     <!-- 月度环比 -->
-    <div id="report-comparison" class="card" style="display:none;">
-      <h3 style="margin-bottom:10px;">📉 月度环比</h3>
+    <div id="report-comparison" class="card fade-in" style="display:none;">
+      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M2.25 6L9 12.75l4.286-4.286a11.948 11.948 0 014.306 6.43l.776 2.898m0 0l3.182-5.511m-3.182 5.51l-5.511-3.181</svg>月度环比</h3>
       <div style="max-width:500px;">
         <canvas id="chartComparison"></canvas>
       </div>
@@ -212,7 +229,13 @@
   <!-- Settings Tab -->
   <div id="tab-settings" class="hidden">
     <div class="card">
-      <h3 style="margin-bottom:10px;">⚙️ 单价管理</h3>
+      <h3 style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75a.75.75 0 00.75-.75V21a.75.75 0 01.75-.75h1.5a2.25 2.25 0 002.25-2.25v-1.5c0-.414.336-.75.75-.75h.75a2.25 2.25 0 002.25-2.25v-1.5c0-.414.336-.75.75-.75h.75a.75.75 0 00.75-.75 9.75 9.75 0 00-9.75-9.75zM8.25 12a1.125 1.125 0 110-2.25 1.125 1.125 0 010 2.25zm3-3.75a1.125 1.125 0 110-2.25 1.125 1.125 0 010 2.25zM15.75 12a1.125 1.125 0 110-2.25 1.125 1.125 0 010 2.25z</svg>主题色</h3>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">点击色块即时切换，浅色/深色主题都会自动适配</p>
+      <div class="accent-swatches" id="accentSwatches"></div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.28zM15 12a3 3 0 11-6 0 3 3 0 016 0z</svg>单价管理</h3>
       <div class="row">
         <div class="form-group" style="flex:0.5;">
           <label>新增单价(元/吨)</label>
@@ -224,7 +247,7 @@
     </div>
 
     <div class="card">
-      <h3 style="margin-bottom:10px;">📊 报表配置</h3>
+      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75</svg>报表配置</h3>
       <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">选择要在报表页显示的模块</p>
       <div class="config-list">
         <label class="config-item">
@@ -254,11 +277,11 @@
       </div>
 
     <div class="card">
-      <h3 style="margin-bottom:10px;">💾 数据管理</h3>
+      <h3 style="margin-bottom:10px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 5.625c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125</svg>数据管理</h3>
       <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">每次保存自动备份到服务器 backups/ 目录（保留最近20份），也可手动导出/导入整库备份</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="btn btn-primary" onclick="exportData()">📤 导出备份 JSON</button>
-        <button class="btn btn-outline" onclick="document.getElementById('importFile').click()">📥 导入备份</button>
+        <button class="btn btn-primary" onclick="exportData()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5</svg>导出备份 JSON</button>
+        <button class="btn btn-outline" onclick="document.getElementById('importFile').click()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3</svg>导入备份</button>
         <input type="file" id="importFile" accept=".json,application/json" style="display:none;" onchange="importData(this)">
       </div>
     </div>
@@ -281,7 +304,7 @@
 <!-- Batch Modal -->
 <div class="modal-overlay" id="batchOverlay" onclick="closeBatchModal()">
   <div class="modal modal-wide" onclick="event.stopPropagation()">
-    <div class="modal-header">📋 批量录入 - <span id="batchMonth"></span></div>
+    <div class="modal-header"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z</svg>批量录入 - <span id="batchMonth"></span></div>
     <div class="modal-body" style="max-height:65vh;overflow-y:auto;padding:0;">
       <div style="padding:10px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:0;background:var(--surface);z-index:2;">
         <span style="font-size:12px;color:var(--muted);font-weight:600;">批量单价</span>
@@ -319,7 +342,7 @@
 <!-- Extras Modal（额外账本） -->
 <div class="modal-overlay" id="extrasOverlay" onclick="closeExtrasModal()">
   <div class="modal modal-wide" onclick="event.stopPropagation()">
-    <div class="modal-header">💰 额外账本 - <span id="extrasMonth"></span></div>
+    <div class="modal-header"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="" aria-hidden="true">M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z</svg>额外账本 - <span id="extrasMonth"></span></div>
     <div class="modal-body" style="max-height:65vh;overflow-y:auto;padding:0;">
       <div style="padding:12px;border-bottom:1px solid var(--border);">
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
@@ -356,6 +379,8 @@ let prices = [];
 let currentMonth = '';
 let selectedPrice = null;
 let recordsById = {};
+
+const ICON_TRASH = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>';
 
 function toast(msg) {
   const t = document.getElementById('toast');
@@ -644,7 +669,7 @@ function updateBatchDelBtn() {
   const checked = document.querySelectorAll('.row-check:checked').length;
   const btn = document.getElementById('batchDelBtn');
   btn.style.display = checked > 0 ? '' : 'none';
-  btn.textContent = checked > 0 ? `🗑️ 删除选中(${checked})` : '🗑️ 删除选中';
+  btn.innerHTML = ICON_TRASH + (checked > 0 ? `删除选中(${checked})` : '删除选中');
 }
 
 function batchDelete() {
@@ -666,6 +691,9 @@ function batchDelete() {
 }
 
 let chartInstances = {};
+function themeIsDark() {
+  return document.documentElement.getAttribute('data-theme') === 'dark';
+}
 
 // 数字计数动画
 function animateNumber(element, target, duration = 800, prefix = '', suffix = '') {
@@ -692,6 +720,10 @@ function animateNumber(element, target, duration = 800, prefix = '', suffix = ''
     }
   }
   requestAnimationFrame(update);
+  // 兜底：动画结束后确保显示最终值（rAF 被暂停/节流时）
+  setTimeout(() => {
+    element.textContent = prefix + (target >= 100 ? Math.round(target).toLocaleString() : target.toFixed(1)) + suffix;
+  }, duration + 100);
 }
 
 function destroyCharts() {
@@ -789,7 +821,7 @@ async function loadReport() {
   if (config['price-pie'] && report.by_price && Object.keys(report.by_price).length) {
     const pieLabels = Object.keys(report.by_price).sort((a,b)=>a-b).map(p => p + '元/吨');
     const pieData = Object.keys(report.by_price).sort((a,b)=>a-b).map(p => report.by_price[p].amount);
-    const pieColors = ['#166534','#15803D','#16A34A','#22C55E','#4ADE80','#86EFAC'];
+    const pieColors = currentPreset()[themeIsDark() ? 'dark' : 'light'].pie;
     const pieTotal = pieData.reduce((a,b)=>a+b, 0);
     chartInstances.pie = new Chart(document.getElementById('chartPricePie'), {
       type: 'doughnut',
@@ -823,7 +855,7 @@ async function loadReport() {
     });
     chartInstances.comp = new Chart(document.getElementById('chartComparison'), {
       type: 'bar',
-      data: { labels: compLabels, datasets: [{ label: '环比增长%', data: compData, backgroundColor: compData.map(v => v >= 0 ? '#16A34A99' : '#EF444499'), borderColor: compData.map(v => v >= 0 ? '#16A34A' : '#EF4444'), borderWidth: 1, borderRadius: 4 }] },
+      data: { labels: compLabels, datasets: [{ label: '环比增长%', data: compData, backgroundColor: compData.map(v => v >= 0 ? (themeIsDark() ? '#4ADE8099' : '#16A34A99') : (themeIsDark() ? '#F8717199' : '#EF444499')), borderColor: compData.map(v => v >= 0 ? (themeIsDark() ? '#4ADE80' : '#16A34A') : (themeIsDark() ? '#F87171' : '#EF4444')), borderWidth: 1, borderRadius: 4 }] },
       options: { responsive: true, plugins: { title: { display: true, text: '月度环比增长率' }, legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.parsed.y + '%' } } }, scales: { y: { title: { display: true, text: '%' }, ticks: { callback: v => v + '%' } } } }
     });
   }
@@ -941,8 +973,8 @@ function makeExtrasRowHtml(rowKey) {
     ? extrasPrices.map(p => `<span class="price-mini ${p===extrasSelectedPrice?'active':''}" data-row="${rowKey}" data-price="${p}" onclick="setExtrasRowPrice('${rowKey}',${p})">${p}</span>`).join(' ')
     : '<span style="font-size:11px;color:var(--muted);">先添加单价</span>';
   return `<tr class="erow" data-row="${rowKey}">
-    <td><input type="text" id="extrasDate${rowKey}" placeholder="如 5 或 10.5" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></td>
-    <td><input type="text" id="extrasRaw${rowKey}" placeholder="如 400+300" oninput="calcExtrasRow('${rowKey}')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></td>
+    <td><input type="text" id="extrasDate${rowKey}" inputmode="decimal" aria-label="号期" placeholder="如 5 或 10.5" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></td>
+    <td><input type="text" id="extrasRaw${rowKey}" aria-label="原始数据" placeholder="如 400+300" oninput="calcExtrasRow('${rowKey}')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></td>
     <td class="calculated" id="extrasKg${rowKey}">-</td>
     <td class="calculated" id="extrasTons${rowKey}">-</td>
     <td class="price-cell">${priceBtns}</td>
@@ -1132,7 +1164,7 @@ function makeBatchRowHtml(day, rowKey, isFirst, defaultPrice) {
     : `<button class="mini-btn" title="删除此行" onclick="removeBatchRow('${rowKey}')">×</button>`;
   return `<tr class="brow" data-day="${day}" data-row="${rowKey}">
     <td style="font-weight:600;text-align:center;">${dateStr}</td>
-    <td><input type="text" id="batchRaw${rowKey}" placeholder="如 750×5 或 183b" oninput="calcBatchRow('${rowKey}')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></td>
+    <td><input type="text" id="batchRaw${rowKey}" aria-label="原始数据" placeholder="如 750×5 或 183b" oninput="calcBatchRow('${rowKey}')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></td>
     <td class="calculated" id="batchKg${rowKey}">-</td>
     <td class="calculated" id="batchTons${rowKey}">-</td>
     <td class="price-cell">${priceBtns}</td>
@@ -1238,19 +1270,86 @@ document.getElementById('inputRaw').addEventListener('keydown', e => {
   if (e.key === 'Enter') addRecord();
 });
 
+// ===== 主题色预设（设置页一键切换；浅色/深色各一套）=====
+const ACCENT_PRESETS = [
+  {id:'forest', name:'深墨绿', swatch:'#166534',
+   light:{a:'#166534',h:'#15803D',on:'#FFFFFF',dim:'rgba(22,101,52,0.10)',ring:'rgba(22,101,52,0.35)',
+     pie:['#166534','#15803D','#16A34A','#22C55E','#4ADE80','#86EFAC']},
+   dark:{a:'#22C55E',h:'#4ADE80',on:'#062B16',dim:'rgba(34,197,94,0.12)',ring:'rgba(34,197,94,0.38)',
+     pie:['#22C55E','#4ADE80','#34D399','#10B981','#86EFAC','#A7F3D0']}},
+  {id:'emerald', name:'翡翠绿', swatch:'#059669',
+   light:{a:'#059669',h:'#047857',on:'#FFFFFF',dim:'rgba(5,150,105,0.10)',ring:'rgba(5,150,105,0.35)',
+     pie:['#047857','#059669','#10B981','#34D399','#6EE7B7','#A7F3D0']},
+   dark:{a:'#34D399',h:'#6EE7B7',on:'#06281F',dim:'rgba(52,211,153,0.12)',ring:'rgba(52,211,153,0.35)',
+     pie:['#34D399','#6EE7B7','#10B981','#4ADE80','#A7F3D0','#D1FAE5']}},
+  {id:'mint', name:'薄荷绿', swatch:'#10B981',
+   light:{a:'#10B981',h:'#059669',on:'#FFFFFF',dim:'rgba(16,185,129,0.12)',ring:'rgba(16,185,129,0.35)',
+     pie:['#059669','#10B981','#34D399','#6EE7B7','#A7F3D0','#D1FAE5']},
+   dark:{a:'#6EE7B7',h:'#A7F3D0',on:'#052E23',dim:'rgba(110,231,183,0.14)',ring:'rgba(110,231,183,0.35)',
+     pie:['#6EE7B7','#A7F3D0','#34D399','#4ADE80','#D1FAE5','#ECFDF5']}},
+  {id:'teal', name:'青碧', swatch:'#0D9488',
+   light:{a:'#0D9488',h:'#0F766E',on:'#FFFFFF',dim:'rgba(13,148,136,0.10)',ring:'rgba(13,148,136,0.35)',
+     pie:['#115E59','#0D9488','#14B8A6','#2DD4BF','#5EEAD4','#99F6E4']},
+   dark:{a:'#2DD4BF',h:'#5EEAD4',on:'#042F2E',dim:'rgba(45,212,191,0.12)',ring:'rgba(45,212,191,0.35)',
+     pie:['#2DD4BF','#5EEAD4','#14B8A6','#22D3EE','#99F6E4','#CCFBF1']}},
+  {id:'sage', name:'灰绿', swatch:'#4D7C5F',
+   light:{a:'#4D7C5F',h:'#3D6650',on:'#FFFFFF',dim:'rgba(77,124,95,0.12)',ring:'rgba(77,124,95,0.35)',
+     pie:['#3D6650','#4D7C5F','#6B9080','#84A98C','#A3B99F','#CAD2C5']},
+   dark:{a:'#84A98C',h:'#A3B99F',on:'#0F1F16',dim:'rgba(132,169,140,0.14)',ring:'rgba(132,169,140,0.35)',
+     pie:['#84A98C','#A3B99F','#B7CEB0','#CAD2C5','#D6E4D8','#EDF4EE']}},
+  {id:'lime', name:'亮翠绿', swatch:'#16A34A',
+   light:{a:'#16A34A',h:'#15803D',on:'#FFFFFF',dim:'rgba(22,163,74,0.10)',ring:'rgba(22,163,74,0.35)',
+     pie:['#15803D','#16A34A','#22C55E','#4ADE80','#86EFAC','#BBF7D0']},
+   dark:{a:'#4ADE80',h:'#86EFAC',on:'#052E16',dim:'rgba(74,222,128,0.14)',ring:'rgba(74,222,128,0.35)',
+     pie:['#4ADE80','#86EFAC','#22C55E','#34D399','#BBF7D0','#DCFCE7']}},
+  {id:'blue', name:'蓝', swatch:'#2563EB',
+   light:{a:'#2563EB',h:'#1D4ED8',on:'#FFFFFF',dim:'rgba(37,99,235,0.10)',ring:'rgba(37,99,235,0.35)',
+     pie:['#1D4ED8','#2563EB','#3B82F6','#60A5FA','#93C5FD','#BFDBFE']},
+   dark:{a:'#60A5FA',h:'#93C5FD',on:'#081B2E',dim:'rgba(96,165,250,0.14)',ring:'rgba(96,165,250,0.35)',
+     pie:['#60A5FA','#93C5FD','#3B82F6','#818CF8','#BFDBFE','#DBEAFE']}},
+  {id:'indigo', name:'靛蓝', swatch:'#4F46E5',
+   light:{a:'#4F46E5',h:'#4338CA',on:'#FFFFFF',dim:'rgba(79,70,229,0.10)',ring:'rgba(79,70,229,0.35)',
+     pie:['#4338CA','#4F46E5','#6366F1','#818CF8','#A5B4FC','#C7D2FE']},
+   dark:{a:'#818CF8',h:'#A5B4FC',on:'#14143A',dim:'rgba(129,140,248,0.14)',ring:'rgba(129,140,248,0.35)',
+     pie:['#818CF8','#A5B4FC','#6366F1','#A78BFA','#C7D2FE','#E0E7FF']}}
+];
+
+let currentAccentId = localStorage.getItem('accent') || 'forest';
+function currentPreset() {
+  return ACCENT_PRESETS.find(p => p.id === currentAccentId) || ACCENT_PRESETS[0];
+}
+function renderAccentSwatches() {
+  const box = document.getElementById('accentSwatches');
+  if (!box) return;
+  box.innerHTML = ACCENT_PRESETS.map(p =>
+    `<button type="button" class="accent-swatch ${p.id===currentAccentId?'active':''}" data-accent="${p.id}" ` +
+    `style="background:${p.swatch}" title="${p.name}" aria-label="${p.name}" onclick="applyAccent('${p.id}')"></button>`
+  ).join('');
+}
+function applyAccent(id) {
+  currentAccentId = id;
+  localStorage.setItem('accent', id);
+  const p = currentPreset();
+  const t = themeIsDark() ? p.dark : p.light;
+  const root = document.documentElement;
+  root.style.setProperty('--accent', t.a);
+  root.style.setProperty('--accent-hover', t.h);
+  root.style.setProperty('--accent-dim', t.dim);
+  root.style.setProperty('--on-accent', t.on);
+  root.style.setProperty('--ring', t.ring);
+  document.querySelectorAll('.accent-swatch').forEach(el =>
+    el.classList.toggle('active', el.dataset.accent === id));
+  if (Object.keys(chartInstances).length) loadReport();
+}
+renderAccentSwatches();
+
 // Theme Toggle
 function setTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem('theme', theme);
-  const icon = document.getElementById('themeIcon');
   const label = document.getElementById('themeLabel');
-  if (theme === 'light') {
-    icon.textContent = '☀️';
-    label.textContent = '浅色';
-  } else {
-    icon.textContent = '🌙';
-    label.textContent = '深色';
-  }
+  label.textContent = theme === 'light' ? '浅色' : '深色';
+  applyAccent(currentAccentId);
 }
 
 function toggleTheme() {
